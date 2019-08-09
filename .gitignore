@@ -2,4 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Data_Eval/.vs/Data_Eval/v15
+/Data_Eval/.vs/
+/Data_Eval/Data_Eval/obj
+*.user
