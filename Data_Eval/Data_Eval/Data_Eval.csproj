@@ -2,18 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Data.Eval</AssemblyName>
+    <AssemblyName>Data_Eval</AssemblyName>
     <RootNamespace>Data.Eval</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Data_Eval.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Release\netstandard2.0\Data.Eval.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Data_Eval.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Data_Eval.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
+  </ItemGroup>
 
 </Project>

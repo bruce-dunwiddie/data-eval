@@ -1,0 +1,8 @@
+using System;
+
+public sealed class CustomEvaluator{
+	private System.Int32 intValue;
+	public object Eval(){
+		return intValue + 1;
+	}
+}

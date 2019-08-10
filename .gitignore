@@ -3,5 +3,10 @@
 ################################################################################
 
 /Data_Eval/.vs/
+/Data_Eval/Data_Eval/bin
 /Data_Eval/Data_Eval/obj
+/Data_Eval/packages
+/Data_Eval/Tests/bin
+/Data_Eval/Tests/obj
 *.user
+*.nupkg
