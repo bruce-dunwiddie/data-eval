@@ -1,0 +1,7 @@
+using System;
+
+public sealed class CustomEvaluator{
+	public object Eval(){
+		return 1 + 1;
+	}
+}
