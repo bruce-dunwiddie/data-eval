@@ -84,7 +84,7 @@ namespace Data.Eval.Compilation
 
 						foreach (var error in emitResult.Diagnostics)
 						{							
-							if (error.Severity == DiagnosticSeverity.Error)
+							if (error.Severity == DiagnosticSeverity.Error || error.IsWarningAsError)
 							{								
 								exceptionMessage += "\n\tLine " + error.Location.GetLineSpan().StartLinePosition.Line.ToString() + ": " + error.GetMessage();
 							}
