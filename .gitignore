@@ -8,4 +8,6 @@
 /Data_Eval/packages
 /Data_Eval/Tests/bin
 /Data_Eval/Tests/obj
+/Data_Eval/TestsFramework/bin
+/Data_Eval/TestsFramework/obj
 *.user
