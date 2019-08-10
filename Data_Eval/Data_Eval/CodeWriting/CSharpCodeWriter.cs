@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Data.Eval.CodeWriting
 {
-	public sealed class CSharpCodeWriter
+	internal sealed class CSharpCodeWriter
 	{
 		public string GetClassText(
 			string expression,
 			IEnumerable<Variable> variables = null)
 		{
-			// TODO: try switching method and variables to static?
 			StringBuilder classText = new StringBuilder();
 
 			classText.Append("using System;\r\n\r\n");

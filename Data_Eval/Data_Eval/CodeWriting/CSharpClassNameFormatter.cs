@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Eval.CodeWriting
 {
-	public sealed class CSharpClassNameFormatter
+	internal sealed class CSharpClassNameFormatter
 	{
 		public string GetFullName(
 			Type type)

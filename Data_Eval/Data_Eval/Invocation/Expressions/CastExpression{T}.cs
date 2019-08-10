@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
-	public sealed class CastExpression<T>
+	internal sealed class CastExpression<T>
 	{
 		public Func<object, T> GetFunc()
 		{

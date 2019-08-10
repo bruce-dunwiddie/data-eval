@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
-	public sealed class DefaultClassConstructorExpression
+	internal sealed class DefaultClassConstructorExpression
 	{
 		public Func<object> GetFunc(
 			Type instanceType)

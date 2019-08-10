@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
-	public sealed class SetInstanceMemberValueExpression
+	internal sealed class SetInstanceMemberValueExpression
 	{
 		public Action<object, object> GetAction(
 			Type instanceType,

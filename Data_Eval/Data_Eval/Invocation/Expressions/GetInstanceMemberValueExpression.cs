@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
-	public sealed class GetInstanceMemberValueExpression
+	internal sealed class GetInstanceMemberValueExpression
 	{
 		public Func<object, object> GetFunc(
 			Type instanceType,
