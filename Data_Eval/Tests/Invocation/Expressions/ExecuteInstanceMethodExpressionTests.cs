@@ -19,7 +19,7 @@ namespace Tests.Invocation.Expressions
 			var example = new ExampleClass();
 
 			var func = new ExecuteInstanceMethodExpression()
-				.GetFunc(
+				.GetFuncWithReturn(
 					typeof(ExampleClass),
 					"GetIntValue");
 

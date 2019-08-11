@@ -22,7 +22,7 @@ namespace Tests.CodeWriting
 
 			var expression = "return 1 + 1";
 
-			var classText = writer.GetClassText(
+			var classText = writer.GetClassTextWithReturn(
 				expression);
 
 			Assert.AreEqual(
@@ -37,7 +37,7 @@ namespace Tests.CodeWriting
 
 			var expression = "return intValue + 1";
 
-			var classText = writer.GetClassText(
+			var classText = writer.GetClassTextWithReturn(
 				expression,
 				new List<CSharpCodeWriter.Variable>
 				{

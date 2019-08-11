@@ -18,14 +18,6 @@ namespace Tests
 		[Test]
 		public void Evaluator_SimpleAddition()
 		{
-			var asm = Assembly.GetExecutingAssembly();
-			var pk = Assembly.GetExecutingAssembly().GetName().GetPublicKey();
-
-			string publicKey = "";
-
-			for (int i = 0; i < pk.GetLength(0); i++)
-				publicKey += String.Format("{0:x2}", pk[i]);
-
 			var evaluator = new Evaluator(
 				"return 1 + 1");
 
@@ -126,6 +118,21 @@ namespace Tests
 		{
 			var answer = new Evaluator("return \"1\"").Eval<double>();
 			Assert.AreEqual(1, answer);
+		}
+
+		[Test]
+		public void Evaluator_UpdateVariable()
+		{
+			var evaluator = new Evaluator(
+				"intValue++");
+
+			evaluator["intValue"] = 2;
+
+			evaluator.Exec();
+
+			int newValue = (int)evaluator["intValue"];
+
+			Assert.AreEqual(3, newValue);
 		}
 	}
 }
