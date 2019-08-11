@@ -23,4 +23,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Remove="*nupkg" />
+	</ItemGroup>
+
 </Project>
