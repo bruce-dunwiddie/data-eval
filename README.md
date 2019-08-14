@@ -28,3 +28,12 @@ Console.WriteLine("Result: " + evaluator.Eval());
 ```
 
 [.Net Fiddle](https://dotnetfiddle.net/19moI3)
+
+### Variable Updates with No Return
+
+```csharp
+var evaluator = new Evaluator("x++");
+evaluator["x"] = 1;
+evaluator.Exec();
+Console.WriteLine("Result: " + evaluator["x"]);
+```
