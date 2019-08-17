@@ -10,6 +10,8 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ewhl0xxqok5yeqr3?svg=true)](https://ci.appveyor.com/project/bruce-dunwiddie/data-eval)
+
 ### Simple Addition
 
 ```csharp
