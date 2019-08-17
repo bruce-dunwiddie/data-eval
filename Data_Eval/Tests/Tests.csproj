@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data_Eval\Data_Eval.csproj" />
+    <ProjectReference Include="..\TestExternalReference\TestExternalReference.csproj" />
   </ItemGroup>
 
   <ItemGroup>
