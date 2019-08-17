@@ -8,5 +8,7 @@
 /Data_Eval/packages
 /Data_Eval/Tests/bin
 /Data_Eval/Tests/obj
+/Data_Eval/TestExternalReference/bin
+/Data_Eval/TestExternalReference/obj
 *.user
 *.nupkg
