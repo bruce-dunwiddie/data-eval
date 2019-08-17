@@ -37,3 +37,25 @@ evaluator["x"] = 1;
 evaluator.Exec();
 Console.WriteLine("Result: " + evaluator["x"]);
 ```
+
+### Expressions with external code
+
+```csharp
+// you can reference external code from inside an expression
+var eval = new Evaluator("message = ExampleClass.HelloWorld");
+
+// add a reference to the external code by specifying the path to the dll
+eval.AddReference(typeof(TestExternalReference.ExampleClass).Assembly.Location);
+
+// can add usings to simplify expression
+eval.AddUsing("TestExternalReference");
+
+// define the holder variable by assigning it a default value
+eval["message"] = "";
+
+// execute expression and set the variable
+eval.Exec();
+
+// write out Hello World
+Console.WriteLine(eval["message"]);
+```
