@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Data.Eval.CodeWriting;
 using Data.Eval.Compilation;
@@ -11,7 +12,9 @@ namespace Data.Eval
 	public sealed class Evaluator
 	{
 		private string expression;
-		private Dictionary<string, Variable> variables = null;
+		private Dictionary<string, Variable> variables = new Dictionary<string, Variable>();
+		private List<string> references = new List<string>();
+		private List<string> usings = new List<string>();
 		private bool initialized = false;
 		private Execution execution = null;
 
@@ -69,19 +72,36 @@ namespace Data.Eval
 			return variables[name].Value;
 		}
 
-		private void InitEval()
+		public void AddReference(
+			string assemblyPath)
+		{
+			references.Add(assemblyPath);
+		}
+
+		public void AddReference(
+			Assembly assembly)
+		{
+			references.Add(assembly.Location);
+		}
+
+		public void AddUsing(
+			string usingNamespace)
+		{
+			usings.Add(usingNamespace);
+		}
+
+		private void InitEval(string caller)
 		{
 			CSharpCodeWriter writer = new CSharpCodeWriter();
 
 			string classText = writer.GetClassTextWithReturn(
 				expression,
-				variables == null ?
-					new List<CSharpCodeWriter.Variable> { } :
-					variables.Select(entry => new CSharpCodeWriter.Variable
-					{
-						Name = entry.Key,
-						Type = entry.Value.Type
-					}).ToList());
+				variables.Select(entry => new CSharpCodeWriter.Variable
+				{
+					Name = entry.Key,
+					Type = entry.Value.Type
+				}).ToList(),
+				usings);
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
@@ -95,35 +115,35 @@ namespace Data.Eval
 			}
 			else
 			{
+				references.Add(caller);
+
 				execution = new Execution();
 
 				Compiler compiler = new Compiler();
 
 				Type newType = compiler.Compile(
-					classText);
+					classText,
+					references);
 
 				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
 					newType);
 
-				if (variables != null)
+				foreach (string key in variables.Keys)
 				{
-					foreach (string key in variables.Keys)
+					Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
+						newType,
+						key);
+
+					Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
+						newType,
+						key);
+
+					execution.Variables[key] = new ExecutionVariable
 					{
-						Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
-							newType,
-							key);
-
-						Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
-							newType,
-							key);
-
-						execution.Variables[key] = new ExecutionVariable
-						{
-							Getter = getter,
-							Setter = setter,
-							Type = variables[key].Type
-						};
-					}
+						Getter = getter,
+						Setter = setter,
+						Type = variables[key].Type
+					};
 				}
 
 				execution.Evaluate = new ExecuteInstanceMethodExpression().GetFuncWithReturn(
@@ -136,19 +156,18 @@ namespace Data.Eval
 			initialized = true;
 		}
 
-		private void InitExec()
+		private void InitExec(string caller)
 		{
 			CSharpCodeWriter writer = new CSharpCodeWriter();
 
 			string classText = writer.GetClassTextWithNoReturn(
 				expression,
-				variables == null ?
-					new List<CSharpCodeWriter.Variable> { } :
-					variables.Select(entry => new CSharpCodeWriter.Variable
-					{
-						Name = entry.Key,
-						Type = entry.Value.Type
-					}).ToList());
+				variables.Select(entry => new CSharpCodeWriter.Variable
+				{
+					Name = entry.Key,
+					Type = entry.Value.Type
+				}).ToList(),
+				usings);
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
@@ -162,35 +181,35 @@ namespace Data.Eval
 			}
 			else
 			{
+				references.Add(caller);
+
 				execution = new Execution();
 
 				Compiler compiler = new Compiler();
 
 				Type newType = compiler.Compile(
-					classText);
+					classText,
+					references);
 
 				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
 					newType);
 
-				if (variables != null)
+				foreach (string key in variables.Keys)
 				{
-					foreach (string key in variables.Keys)
+					Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
+						newType,
+						key);
+
+					Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
+						newType,
+						key);
+
+					execution.Variables[key] = new ExecutionVariable
 					{
-						Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
-							newType,
-							key);
-
-						Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
-							newType,
-							key);
-
-						execution.Variables[key] = new ExecutionVariable
-						{
-							Getter = getter,
-							Setter = setter,
-							Type = variables[key].Type
-						};
-					}
+						Getter = getter,
+						Setter = setter,
+						Type = variables[key].Type
+					};
 				}
 
 				execution.Execute = new ExecuteInstanceMethodExpression().GetFuncWithNoReturn(
@@ -203,11 +222,11 @@ namespace Data.Eval
 			initialized = true;
 		}
 
-		public object Eval()
+		private object EvalInternal(string caller)
 		{
 			if (!initialized)
 			{
-				InitEval();
+				InitEval(caller);
 			}
 
 			object newObject = execution.Constructor();
@@ -245,9 +264,18 @@ namespace Data.Eval
 			return result;
 		}
 
+		public object Eval()
+		{
+			string caller = Assembly.GetCallingAssembly().Location;
+
+			return EvalInternal(caller);
+		}
+
 		public T Eval<T>()
 		{
-			object answer = Eval();
+			string caller = Assembly.GetCallingAssembly().Location;
+
+			object answer = EvalInternal(caller);
 
 			CastExpression<T> exp = new CastExpression<T>();
 			Func<object, T> cast = exp.GetFunc();
@@ -257,19 +285,25 @@ namespace Data.Eval
 
 		public static object Eval(string expression)
 		{
-			return new Evaluator(expression).Eval();
+			string caller = Assembly.GetCallingAssembly().Location;
+
+			return new Evaluator(expression).EvalInternal(caller);
 		}
 
 		public static T Eval<T>(string expression)
 		{
-			return new Evaluator(expression).Eval<T>();
+			string caller = Assembly.GetCallingAssembly().Location;
+
+			return (T) new Evaluator(expression).EvalInternal(caller);
 		}
 
 		public void Exec()
 		{
 			if (!initialized)
 			{
-				InitExec();
+				string caller = Assembly.GetCallingAssembly().Location;
+
+				InitExec(caller);
 			}
 
 			object newObject = execution.Constructor();
