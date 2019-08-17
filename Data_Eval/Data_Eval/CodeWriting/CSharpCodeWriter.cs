@@ -62,6 +62,18 @@ namespace Data.Eval.CodeWriting
 
 			classText.Append("using System;\r\n\r\n");
 
+			if (usings.Count > 0)
+			{
+				foreach (string usingNamespace in usings)
+				{
+					classText.AppendFormat(
+						"using {0};\r\n",
+						usingNamespace);
+				}
+
+				classText.Append("\r\n");
+			}
+
 			classText.Append("public sealed class CustomEvaluator{\r\n");
 
 			if (variables != null)
