@@ -1,0 +1,8 @@
+language: csharp
+solution: Data_Eval/Data_Eval.sln
+install:
+  - nuget restore Data_Eval.sln
+  - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
+script:
+  - msbuild /p:Configuration=Release Data_Eval/Data_Eval.sln
+  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./Data_Eval/Tests/bin/Release/netcoreapp2.0/Data_Eval.dll
