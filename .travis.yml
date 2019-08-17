@@ -1,7 +1,7 @@
 language: csharp
 solution: Data_Eval/Data_Eval.sln
 install:
-  - nuget restore Data_Eval.sln
+  - nuget restore Data_Eval/Data_Eval.sln
   - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
 script:
   - msbuild /p:Configuration=Release Data_Eval/Data_Eval.sln
