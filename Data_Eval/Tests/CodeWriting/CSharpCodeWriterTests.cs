@@ -28,8 +28,10 @@ namespace Tests.CodeWriting
 				new List<string> { });
 
 			Assert.AreEqual(
-				Resources.CSharpSimpleExpression,
-				classText);
+				// line ending types don't matter.
+				// making sure tests work on Windows and *nix platforms.
+				Resources.CSharpSimpleExpression.Replace("\r\n", "\n"),
+				classText.Replace("\r\n", "\n"));
 		}
 
 		[Test]
@@ -52,8 +54,8 @@ namespace Tests.CodeWriting
 				new List<string> { });
 
 			Assert.AreEqual(
-				Resources.CSharpSimpleVariable,
-				classText);
+				Resources.CSharpSimpleVariable.Replace("\r\n", "\n"),
+				classText.Replace("\r\n", "\n"));
 		}
 	}
 }
