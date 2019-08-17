@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,12 +18,44 @@ namespace Data.Eval.Compilation
 		public Type Compile(
 			string classText)
 		{
+			return Compile(
+				classText,
+				new List<string>());
+		}
+
+		public Type Compile(
+			string classText,
+			List<string> referenceAssemblies)
+		{
+			// https://stackoverflow.com/questions/23907305/roslyn-has-no-reference-to-system-runtime
+
+			//The location of the .NET assemblies
+			var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
+
+			var references = referenceAssemblies
+				.Concat(new string[] {
+
+					typeof(object).Assembly.Location,
+
+					/* 
+					* Adding some necessary .NET assemblies
+					* These assemblies couldn't be loaded correctly via the same construction as above,
+					* in specific the System.Runtime.
+					*/
+					Path.Combine(assemblyPath, "mscorlib.dll"),
+					Path.Combine(assemblyPath, "System.dll"),
+					Path.Combine(assemblyPath, "System.Core.dll"),
+					Path.Combine(assemblyPath, "System.Runtime.dll")
+				})
+				.Select(r => MetadataReference.CreateFromFile(r))
+				.ToArray();
+
 			SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(classText);
 
 			CSharpCompilation compilation = CSharpCompilation.Create(
 				"EvalAssembly",
 				new[] { syntaxTree },
-				new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
+				references,
 				new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
 			using (MemoryStream ms = new MemoryStream())
@@ -33,12 +66,11 @@ namespace Data.Eval.Compilation
 				{
 					string exceptionMessage = "Class failed to compile.";
 
-					foreach (var error in emitResult.Diagnostics)
+					foreach (var error in emitResult.Diagnostics
+						.Where(e => e.Severity == DiagnosticSeverity.Error || e.IsWarningAsError)
+						.OrderBy(e => e.Location.GetLineSpan().StartLinePosition.Line))
 					{							
-						if (error.Severity == DiagnosticSeverity.Error || error.IsWarningAsError)
-						{								
-							exceptionMessage += "\n\tLine " + error.Location.GetLineSpan().StartLinePosition.Line.ToString() + ": " + error.GetMessage();
-						}
+						exceptionMessage += "\n\tLine " + error.Location.GetLineSpan().StartLinePosition.Line.ToString() + ": " + error.GetMessage();
 					}
 
 					throw new CompilationException(exceptionMessage)

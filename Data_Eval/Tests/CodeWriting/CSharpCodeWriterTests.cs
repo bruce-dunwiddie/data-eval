@@ -23,7 +23,9 @@ namespace Tests.CodeWriting
 			var expression = "return 1 + 1";
 
 			var classText = writer.GetClassTextWithReturn(
-				expression);
+				expression,
+				new List<CSharpCodeWriter.Variable> { },
+				new List<string> { });
 
 			Assert.AreEqual(
 				Resources.CSharpSimpleExpression,
@@ -46,7 +48,8 @@ namespace Tests.CodeWriting
 						Name = "intValue",
 						Type = typeof(int)
 					}
-				});
+				},
+				new List<string> { });
 
 			Assert.AreEqual(
 				Resources.CSharpSimpleVariable,
