@@ -17,6 +17,8 @@ namespace Data.Eval
 		private List<string> usings = new List<string>();
 		private bool initialized = false;
 		private Execution execution = null;
+		private bool callerInitialized = false;
+		private string caller = null;
 
 		private static Dictionary<string, Execution> compiledTypes = new Dictionary<string, Execution>();
 
@@ -222,6 +224,11 @@ namespace Data.Eval
 			initialized = true;
 		}
 
+		private object EvalInternal()
+		{
+			return EvalInternal(caller);
+		}
+
 		private object EvalInternal(string caller)
 		{
 			if (!initialized)
@@ -266,16 +273,24 @@ namespace Data.Eval
 
 		public object Eval()
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			if (!callerInitialized)
+			{
+				caller = Assembly.GetCallingAssembly().Location;
+				callerInitialized = true;
+			}
 
-			return EvalInternal(caller);
+			return EvalInternal();
 		}
 
 		public T Eval<T>()
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			if (!callerInitialized)
+			{
+				caller = Assembly.GetCallingAssembly().Location;
+				callerInitialized = true;
+			}
 
-			object answer = EvalInternal(caller);
+			object answer = EvalInternal();
 
 			CastExpression<T> exp = new CastExpression<T>();
 			Func<object, T> cast = exp.GetFunc();
@@ -299,10 +314,14 @@ namespace Data.Eval
 
 		public void Exec()
 		{
+			if (!callerInitialized)
+			{
+				caller = Assembly.GetCallingAssembly().Location;
+				callerInitialized = true;
+			}
+
 			if (!initialized)
 			{
-				string caller = Assembly.GetCallingAssembly().Location;
-
 				InitExec(caller);
 			}
 
