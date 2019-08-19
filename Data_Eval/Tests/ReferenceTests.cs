@@ -48,8 +48,6 @@ namespace Tests
 			Assert.AreEqual(6, eval["z"]);
 		}
 
-
-
 		[Test]
 		public void Evaluator_ExecAddUsing()
 		{

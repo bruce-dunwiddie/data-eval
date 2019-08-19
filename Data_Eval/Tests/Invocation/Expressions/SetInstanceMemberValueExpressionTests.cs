@@ -31,7 +31,7 @@ namespace Tests.Invocation.Expressions
 				3);
 
 			Assert.AreEqual(
-				3, 
+				3,
 				example.IntValue);
 		}
 
@@ -50,14 +50,22 @@ namespace Tests.Invocation.Expressions
 				3);
 
 			Assert.AreEqual(
-				3, 
+				3,
 				example.GetPrivateIntValue());
 		}
 
 		public class ExampleClass
 		{
 			public int IntValue;
+
+			// warning CS0649: Field 'SetInstanceMemberValueExpressionTests.ExampleClass.PrivateIntValue'
+			// is never assigned to, and will always have its default value 0
+
+#pragma warning disable 0649
+
 			private int PrivateIntValue;
+
+#pragma warning restore 0649
 
 			public int GetPrivateIntValue()
 			{
