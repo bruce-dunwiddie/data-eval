@@ -9,7 +9,8 @@ namespace Data.Eval.CodeWriting
 		public string GetClassTextWithReturn(
 			string expression,
 			List<Variable> variables,
-			List<string> usings)
+			List<string> usings,
+			List<string> methods)
 		{
 			StringBuilder classText = new StringBuilder();
 
@@ -39,6 +40,16 @@ namespace Data.Eval.CodeWriting
 						"\tprivate {0} {1};\r\n",
 						formatter.GetFullName(variable.Type),
 						variable.Name);
+				}
+			}
+
+			if (methods != null)
+			{
+				foreach (string method in methods)
+				{
+					classText.AppendFormat(
+						"{0}\r\n",
+						method);
 				}
 			}
 
@@ -56,7 +67,8 @@ namespace Data.Eval.CodeWriting
 		public string GetClassTextWithNoReturn(
 			string expression,
 			List<Variable> variables,
-			List<string> usings)
+			List<string> usings,
+			List<string> methods)
 		{
 			StringBuilder classText = new StringBuilder();
 
@@ -86,6 +98,16 @@ namespace Data.Eval.CodeWriting
 						"\tprivate {0} {1};\r\n",
 						formatter.GetFullName(variable.Type),
 						variable.Name);
+				}
+			}
+
+			if (methods != null)
+			{
+				foreach (string method in methods)
+				{
+					classText.AppendFormat(
+						"{0}\r\n",
+						method);
 				}
 			}
 

@@ -15,6 +15,7 @@ namespace Data.Eval
 		private Dictionary<string, Variable> variables = new Dictionary<string, Variable>();
 		private List<string> references = new List<string>();
 		private List<string> usings = new List<string>();
+		private List<string> methods = new List<string>();
 		private bool initialized = false;
 		private Execution execution = null;
 		private bool callerInitialized = false;
@@ -92,6 +93,12 @@ namespace Data.Eval
 			usings.Add(usingNamespace);
 		}
 
+		public void AddMethod(
+			string methodDefinition)
+		{
+			methods.Add(methodDefinition);
+		}
+
 		private void InitEval(string caller)
 		{
 			CSharpCodeWriter writer = new CSharpCodeWriter();
@@ -103,7 +110,8 @@ namespace Data.Eval
 					Name = entry.Key,
 					Type = entry.Value.Type
 				}).ToList(),
-				usings);
+				usings,
+				methods);
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
@@ -169,7 +177,8 @@ namespace Data.Eval
 					Name = entry.Key,
 					Type = entry.Value.Type
 				}).ToList(),
-				usings);
+				usings,
+				methods);
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous

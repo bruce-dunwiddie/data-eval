@@ -23,9 +23,10 @@ namespace Tests.CodeWriting
 			var expression = "return 1 + 1";
 
 			var classText = writer.GetClassTextWithReturn(
-				expression,
-				new List<CSharpCodeWriter.Variable> { },
-				new List<string> { });
+				expression: expression,
+				variables: new List<CSharpCodeWriter.Variable> { },
+				usings: new List<string> { },
+				methods: new List<string> { });
 
 			Assert.AreEqual(
 				// line ending types don't matter.
@@ -42,8 +43,8 @@ namespace Tests.CodeWriting
 			var expression = "return intValue + 1";
 
 			var classText = writer.GetClassTextWithReturn(
-				expression,
-				new List<CSharpCodeWriter.Variable>
+				expression: expression,
+				variables: new List<CSharpCodeWriter.Variable>
 				{
 					new CSharpCodeWriter.Variable
 					{
@@ -51,7 +52,8 @@ namespace Tests.CodeWriting
 						Type = typeof(int)
 					}
 				},
-				new List<string> { });
+				usings: new List<string> { },
+				methods: new List<string> { });
 
 			Assert.AreEqual(
 				Resources.CSharpSimpleVariable.Replace("\r\n", "\n"),
