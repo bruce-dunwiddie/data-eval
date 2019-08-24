@@ -134,5 +134,42 @@ namespace Tests
 
 			Assert.AreEqual(3, newValue);
 		}
+
+		[Test]
+		public void Evaluator_EvalAddMethod()
+		{
+			var eval = new Evaluator("return AddNumbers(x, y)");
+
+			eval["x"] = 2;
+			eval["y"] = 3;
+
+			eval.AddMethod(@"
+				int AddNumbers(int first, int second)
+				{
+					return first + second;
+				}");
+
+			Assert.AreEqual(5, eval.Eval<int>());
+		}
+
+		[Test]
+		public void Evaluator_ExecAddMethod()
+		{
+			var eval = new Evaluator("z = AddNumbers(x, y)");
+
+			eval["x"] = 2;
+			eval["y"] = 3;
+			eval["z"] = 0;
+
+			eval.AddMethod(@"
+				int AddNumbers(int first, int second)
+				{
+					return first + second;
+				}");
+
+			eval.Exec();
+
+			Assert.AreEqual(5, eval["z"]);
+		}
 	}
 }
