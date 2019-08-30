@@ -1,11 +1,8 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -45,7 +42,10 @@ namespace Data.Eval.Compilation
 					Path.Combine(assemblyPath, "mscorlib.dll"),
 					Path.Combine(assemblyPath, "System.dll"),
 					Path.Combine(assemblyPath, "System.Core.dll"),
-					Path.Combine(assemblyPath, "System.Runtime.dll")
+					Path.Combine(assemblyPath, "System.Runtime.dll"),
+					Path.Combine(assemblyPath, "System.Linq.Expressions.dll"),
+					Path.Combine(assemblyPath, "Microsoft.CSharp.dll"),
+					Path.Combine(assemblyPath, "netstandard.dll")
 				})
 				.Select(r => MetadataReference.CreateFromFile(r))
 				.ToArray();
