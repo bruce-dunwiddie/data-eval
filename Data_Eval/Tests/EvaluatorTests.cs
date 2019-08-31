@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Dynamic;
 
 using NUnit.Framework;
 
@@ -170,6 +166,20 @@ namespace Tests
 			eval.Exec();
 
 			Assert.AreEqual(5, eval["z"]);
+		}
+
+		[Test]
+		public void Evaluator_DynamicVariable()
+		{
+			dynamic test = new ExpandoObject();
+			test.prop = "something";
+
+			var evaluator = new Evaluator(
+				"return a.prop");
+
+			evaluator["a"] = test;
+
+			Assert.AreEqual("something", evaluator.Eval<string>());
 		}
 	}
 }

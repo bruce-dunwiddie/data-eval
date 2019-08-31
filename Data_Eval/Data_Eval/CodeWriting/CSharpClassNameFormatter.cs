@@ -10,7 +10,11 @@ namespace Data.Eval.CodeWriting
 		public string GetFullName(
 			Type type)
 		{
-			if (
+			if (type == typeof(System.Dynamic.ExpandoObject))
+			{
+				return "dynamic";
+			}
+			else if (
 				type.IsGenericType &&
 				type.GetGenericTypeDefinition() == typeof(Nullable<>))
 			{
