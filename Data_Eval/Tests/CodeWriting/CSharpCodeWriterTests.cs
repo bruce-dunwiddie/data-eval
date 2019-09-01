@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using Data.Eval.CodeWriting;
 
-using Tests.Properties;
+using Tests.Resources;
 
 namespace Tests.CodeWriting
 {
@@ -31,7 +31,7 @@ namespace Tests.CodeWriting
 			Assert.AreEqual(
 				// line ending types don't matter.
 				// making sure tests work on Windows and *nix platforms.
-				Resources.CSharpSimpleExpression.Replace("\r\n", "\n"),
+				ResourceReader.CSharpSimpleExpression.Replace("\r\n", "\n"),
 				classText.Replace("\r\n", "\n"));
 		}
 
@@ -56,7 +56,7 @@ namespace Tests.CodeWriting
 				methods: new List<string> { });
 
 			Assert.AreEqual(
-				Resources.CSharpSimpleVariable.Replace("\r\n", "\n"),
+				ResourceReader.CSharpSimpleVariable.Replace("\r\n", "\n"),
 				classText.Replace("\r\n", "\n"));
 		}
 	}

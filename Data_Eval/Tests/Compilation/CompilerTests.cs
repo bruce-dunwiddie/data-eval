@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using Data.Eval.Compilation;
 
-using Tests.Properties;
+using Tests.Resources;
 
 namespace Tests.Compilation
 {
@@ -21,7 +21,7 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpSimpleExpression);
+				ResourceReader.CSharpSimpleExpression);
 
 			Assert.IsNotNull(newType);
 		}
@@ -32,7 +32,7 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpSimpleVariable);
+				ResourceReader.CSharpSimpleVariable);
 
 			Assert.IsNotNull(newType);
 		}
@@ -43,7 +43,7 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpNullableInt);
+				ResourceReader.CSharpNullableInt);
 
 			Assert.IsNotNull(newType);
 		}
