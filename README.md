@@ -1,6 +1,10 @@
 # data-eval
 .Net Library for Evaluating Expressions at Runtime
 
+The goal of this library is to set up a fully featured easy interface for working with C# based expressions as strings with access to as much C# and .Net functionality as possible, with the highest performance and compatibility as possible.
+
+String expressions allow application functionality to be added and modified outside of the application, even viewed and possibly edited by business users with limited technical knowledge.
+
 Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
     Install-Package Data.Eval
