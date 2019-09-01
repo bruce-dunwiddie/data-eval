@@ -44,6 +44,8 @@ evaluator.Exec();
 Console.WriteLine("Result: " + evaluator["x"]);
 ```
 
+[.Net Fiddle](https://dotnetfiddle.net/K30Ht3)
+
 ### Expressions with external code
 
 ```csharp
