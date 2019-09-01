@@ -11,11 +11,11 @@ namespace Data.Eval
 {
 	public sealed class Evaluator
 	{
-		private string expression;
-		private Dictionary<string, Variable> variables = new Dictionary<string, Variable>();
-		private List<string> references = new List<string>();
-		private List<string> usings = new List<string>();
-		private List<string> methods = new List<string>();
+		private readonly string expression;
+		private readonly Dictionary<string, Variable> variables = new Dictionary<string, Variable>();
+		private readonly List<string> references = new List<string>();
+		private readonly List<string> usings = new List<string>();
+		private readonly List<string> methods = new List<string>();
 		private bool initialized = false;
 		private Execution execution = null;
 		private bool callerInitialized = false;
@@ -49,11 +49,6 @@ namespace Data.Eval
 			object value)
 		{
 			// TODO: check variable naming standards
-
-			if (variables == null)
-			{
-				variables = new Dictionary<string, Variable>();
-			}
 
 			if (variables.ContainsKey(name))
 			{
@@ -309,16 +304,16 @@ namespace Data.Eval
 
 		public static object Eval(string expression)
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			string callerLocation = Assembly.GetCallingAssembly().Location;
 
-			return new Evaluator(expression).EvalInternal(caller);
+			return new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
 		public static T Eval<T>(string expression)
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			string callerLocation = Assembly.GetCallingAssembly().Location;
 
-			return (T) new Evaluator(expression).EvalInternal(caller);
+			return (T) new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
 		public void Exec()
@@ -381,8 +376,6 @@ namespace Data.Eval
 			public Action<object, object[]> Execute = null;
 
 			public Func<object> Constructor = null;
-
-			public Type Type = null;
 
 			public Dictionary<string, ExecutionVariable> Variables = new Dictionary<string, ExecutionVariable>();
 		}

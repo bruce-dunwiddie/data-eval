@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using Data.Eval.Compilation;
 
-using Tests.Properties;
+using Tests.Resources;
 
 namespace Tests.Compilation
 {
@@ -21,7 +21,7 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpSimpleExpression);
+				ResourceReader.CSharpSimpleExpression);
 
 			Assert.IsNotNull(newType);
 		}
@@ -32,7 +32,7 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpSimpleVariable);
+				ResourceReader.CSharpSimpleVariable);
 
 			Assert.IsNotNull(newType);
 		}
@@ -43,9 +43,34 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				Resources.CSharpNullableInt);
+				ResourceReader.CSharpNullableInt);
 
 			Assert.IsNotNull(newType);
+		}
+
+		[Test]
+		public void Compiler_Exception()
+		{
+			var compiler = new Compiler();
+
+			string codeToCompile = @"
+				using System;
+
+				public sealed class CustomEvaluator{
+					public System.Int32? intValue;
+					public object Eval(){
+						return intValue + 1
+					}
+				}";
+
+			CompilationException ex = Assert.Throws<CompilationException>(
+				delegate
+				{
+					compiler.Compile(codeToCompile);
+				});
+
+			Assert.AreEqual("Class failed to compile.\n\tLine 6: ; expected", ex.Message);
+			Assert.AreEqual(codeToCompile, ex.GeneratedClassCode);
 		}
 	}
 }
