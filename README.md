@@ -35,7 +35,7 @@ Console.WriteLine("Result: " + evaluator.Eval());
 
 [.Net Fiddle](https://dotnetfiddle.net/19moI3)
 
-### Variable Updates with No Return
+### Variable Updates With No Return
 
 ```csharp
 var evaluator = new Evaluator("x++");
@@ -46,7 +46,7 @@ Console.WriteLine("Result: " + evaluator["x"]);
 
 [.Net Fiddle](https://dotnetfiddle.net/K30Ht3)
 
-### Expressions with external code
+### Expressions With External Code
 
 ```csharp
 // you can reference external code from inside an expression
