@@ -49,8 +49,6 @@ namespace Data.Eval.Invocation.Expressions
 
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
-			List<Expression> parameters = new List<Expression>();
-
 			Expression methodExp = Expression.Call(
 				Expression.Convert(instance, method.DeclaringType),
 				method,

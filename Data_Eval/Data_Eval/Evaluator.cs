@@ -304,16 +304,16 @@ namespace Data.Eval
 
 		public static object Eval(string expression)
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			string callerLocation = Assembly.GetCallingAssembly().Location;
 
-			return new Evaluator(expression).EvalInternal(caller);
+			return new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
 		public static T Eval<T>(string expression)
 		{
-			string caller = Assembly.GetCallingAssembly().Location;
+			string callerLocation = Assembly.GetCallingAssembly().Location;
 
-			return (T) new Evaluator(expression).EvalInternal(caller);
+			return (T) new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
 		public void Exec()
