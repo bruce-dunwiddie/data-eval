@@ -19,7 +19,7 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 ### Simple Addition
 
 ```csharp
-Evaluator.Eval("return 1+1")
+Console.WriteLine(Evaluator.Eval("return 1+1"));
 ```
 
 [.Net Fiddle](https://dotnetfiddle.net/DTLu6Z)
