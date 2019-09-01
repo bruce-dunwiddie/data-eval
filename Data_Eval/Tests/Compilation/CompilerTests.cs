@@ -47,5 +47,30 @@ namespace Tests.Compilation
 
 			Assert.IsNotNull(newType);
 		}
+
+		[Test]
+		public void Compiler_Exception()
+		{
+			var compiler = new Compiler();
+
+			string codeToCompile = @"
+				using System;
+
+				public sealed class CustomEvaluator{
+					public System.Int32? intValue;
+					public object Eval(){
+						return intValue + 1
+					}
+				}";
+
+			CompilationException ex = Assert.Throws<CompilationException>(
+				delegate
+				{
+					compiler.Compile(codeToCompile);
+				});
+
+			Assert.AreEqual("Class failed to compile.\n\tLine 6: ; expected", ex.Message);
+			Assert.AreEqual(codeToCompile, ex.GeneratedClassCode);
+		}
 	}
 }

@@ -18,31 +18,10 @@ namespace Data.Eval.Invocation.Expressions
 
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
-			ParameterInfo[] methodParameters = method.GetParameters();
-
-			List<Expression> parameters = new List<Expression>();
-
-			for (int i = 0; i < methodParameters.Length; i++)
-			{
-				ParameterInfo parameter = methodParameters[i];
-
-				ConstantExpression indexExpr = Expression.Constant(i);
-
-				BinaryExpression item = Expression.ArrayIndex(
-					allParameters,
-					indexExpr);
-
-				UnaryExpression converted = Expression.Convert(
-					item,
-					parameter.ParameterType);
-
-				parameters.Add(converted);
-			}
-
 			Expression methodExp = Expression.Call(
 				Expression.Convert(instance, method.DeclaringType),
 				method,
-				parameters.ToArray());
+				new Expression[] { });
 
 			// http://stackoverflow.com/questions/8974837/expression-of-type-system-datetime-cannot-be-used-for-return-type-system-obje
 			if (methodExp.Type.IsValueType)
@@ -70,31 +49,12 @@ namespace Data.Eval.Invocation.Expressions
 
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
-			ParameterInfo[] methodParameters = method.GetParameters();
-
 			List<Expression> parameters = new List<Expression>();
-
-			for (int i = 0; i < methodParameters.Length; i++)
-			{
-				ParameterInfo parameter = methodParameters[i];
-
-				ConstantExpression indexExpr = Expression.Constant(i);
-
-				BinaryExpression item = Expression.ArrayIndex(
-					allParameters,
-					indexExpr);
-
-				UnaryExpression converted = Expression.Convert(
-					item,
-					parameter.ParameterType);
-
-				parameters.Add(converted);
-			}
 
 			Expression methodExp = Expression.Call(
 				Expression.Convert(instance, method.DeclaringType),
 				method,
-				parameters.ToArray());
+				new Expression[] { });
 
 			Expression<Action<object, object[]>> methodCall = Expression.Lambda<Action<object, object[]>>(
 				methodExp,

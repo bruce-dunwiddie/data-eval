@@ -37,7 +37,7 @@ namespace Data.Eval.CodeWriting
 				foreach (Variable variable in variables)
 				{
 					classText.AppendFormat(
-						"\tprivate {0} {1};\r\n",
+						"\tpublic {0} {1};\r\n",
 						formatter.GetFullName(variable.Type),
 						variable.Name);
 				}
@@ -95,7 +95,7 @@ namespace Data.Eval.CodeWriting
 				foreach (Variable variable in variables)
 				{
 					classText.AppendFormat(
-						"\tprivate {0} {1};\r\n",
+						"\tpublic {0} {1};\r\n",
 						formatter.GetFullName(variable.Type),
 						variable.Name);
 				}

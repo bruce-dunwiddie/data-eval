@@ -28,6 +28,12 @@ namespace Data.Eval.Compilation
 
 		}
 
+		private CompilationException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			
+		}
+
 		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{

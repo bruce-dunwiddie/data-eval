@@ -14,7 +14,7 @@ namespace Data.Eval.Invocation.Expressions
 		{
 			FieldInfo member = instanceType.GetField(
 				memberName,
-				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+				BindingFlags.Public | BindingFlags.Instance);
 
 			ParameterExpression instance = Expression.Parameter(typeof(object), "i");
 

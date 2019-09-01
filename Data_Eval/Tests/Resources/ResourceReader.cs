@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace Tests.Resources
@@ -12,10 +11,7 @@ namespace Tests.Resources
 		{
 			get
 			{
-				using (StreamReader reader = new StreamReader("./Resources/CSharpNullableInt.txt"))
-				{
-					return reader.ReadToEnd();
-				}
+				return ReadResourceFile("CSharpNullableInt.txt");
 			}
 		}
 
@@ -23,10 +19,7 @@ namespace Tests.Resources
 		{
 			get
 			{
-				using (StreamReader reader = new StreamReader("./Resources/CSharpSimpleExpression.txt"))
-				{
-					return reader.ReadToEnd();
-				}
+				return ReadResourceFile("CSharpSimpleExpression.txt");
 			}
 		}
 
@@ -34,12 +27,16 @@ namespace Tests.Resources
 		{
 			get
 			{
-				using (StreamReader reader = new StreamReader("./Resources/CSharpSimpleVariable.txt"))
-				{
-					return reader.ReadToEnd();
-				}
+				return ReadResourceFile("CSharpSimpleVariable.txt");
 			}
 		}
 
+		private static string ReadResourceFile(string fileName)
+		{
+			using (StreamReader reader = new StreamReader("./Resources/" + fileName))
+			{
+				return reader.ReadToEnd();
+			}
+		}
 	}
 }
