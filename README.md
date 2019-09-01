@@ -16,6 +16,10 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ewhl0xxqok5yeqr3?svg=true)](https://ci.appveyor.com/project/bruce-dunwiddie/data-eval)
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=data-eval&metric=coverage)](https://sonarcloud.io/component_measures?id=data-eval&metric=coverage)
+
+[![Code Quality](https://sonarcloud.io/api/project_badges/measure?project=data-eval&metric=alert_status)](https://sonarcloud.io/dashboard?id=data-eval)
+
 ### Simple Addition
 
 ```csharp
