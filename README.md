@@ -1,6 +1,10 @@
 # data-eval
 .Net Library for Evaluating Expressions at Runtime
 
+The goal of this library is to set up a fully featured easy interface for working with C# based expressions as strings with access to as much C# and .Net functionality as possible, with the highest performance and compatibility as possible.
+
+String expressions allow application functionality to be added and modified outside of the application, even viewed and possibly edited by business users with limited technical knowledge.
+
 Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
     Install-Package Data.Eval
@@ -12,10 +16,12 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ewhl0xxqok5yeqr3?svg=true)](https://ci.appveyor.com/project/bruce-dunwiddie/data-eval)
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=data-eval&metric=coverage)](https://sonarcloud.io/component_measures?id=data-eval&metric=coverage)
+
 ### Simple Addition
 
 ```csharp
-Evaluator.Eval("return 1+1")
+Console.WriteLine(Evaluator.Eval("return 1+1"));
 ```
 
 [.Net Fiddle](https://dotnetfiddle.net/DTLu6Z)
@@ -31,7 +37,7 @@ Console.WriteLine("Result: " + evaluator.Eval());
 
 [.Net Fiddle](https://dotnetfiddle.net/19moI3)
 
-### Variable Updates with No Return
+### Variable Updates With No Return
 
 ```csharp
 var evaluator = new Evaluator("x++");
@@ -40,7 +46,9 @@ evaluator.Exec();
 Console.WriteLine("Result: " + evaluator["x"]);
 ```
 
-### Expressions with external code
+[.Net Fiddle](https://dotnetfiddle.net/K30Ht3)
+
+### Expressions With External Code
 
 ```csharp
 // you can reference external code from inside an expression
