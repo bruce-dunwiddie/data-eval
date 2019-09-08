@@ -9,6 +9,10 @@ using Data.Eval.Invocation.Expressions;
 
 namespace Data.Eval
 {
+	/// <summary>
+	///		Class for evaluating and executing C# based string expressions
+	///		dynamically at runtime.
+	/// </summary>
 	public sealed class Evaluator
 	{
 		private readonly string expression;
@@ -23,12 +27,32 @@ namespace Data.Eval
 
 		private static Dictionary<string, Execution> compiledTypes = new Dictionary<string, Execution>();
 
+		/// <summary>
+		///		Creates an instance of the evaluator by specifying the expression
+		///		to be evaluated.
+		/// </summary>
+		/// <param name="expression">
+		///		C# based string expression to be evaluated or executed, e.g.
+		///		"return 1+1" for evaluation or
+		///		"System.Console.WriteLine(\"Hello World!\")" for execution.
+		/// </param>
 		public Evaluator(
 			string expression)
 		{
 			this.expression = expression;
 		}
 
+		/// <summary>
+		///		Sets the value of a variable referenced within the expression prior
+		///		to evaluation or returns the value of a variable referenced within the
+		///		expression after evaluation.
+		/// </summary>
+		/// <param name="name">
+		///		Name of the variable referenced within the expression.
+		/// </param>
+		/// <returns>
+		///		Value of the variable referenced within the expression after evaluation.
+		/// </returns>
 		public object this[string name]
 		{
 			get
@@ -44,6 +68,16 @@ namespace Data.Eval
 			}
 		}
 
+		/// <summary>
+		///		Sets the value of a variable referenced within the expression prior
+		///		to evaluation.
+		/// </summary>
+		/// <param name="name">
+		///		Name of the variable referenced within the expression.
+		/// </param>
+		/// <param name="value">
+		///		Value of the variable that should be used when evaluating the expression.
+		/// </param>
 		public void SetVariable(
 			string name,
 			object value)
@@ -64,30 +98,73 @@ namespace Data.Eval
 			}
 		}
 
+		/// <summary>
+		///		Returns the value of a variable referenced within the
+		///		expression after evaluation.
+		/// </summary>
+		/// <param name="name">
+		///		Name of the variable referenced within the expression.
+		/// </param>
+		/// <returns>
+		///		Value of the variable referenced within the expression after evaluation.
+		/// </returns>
 		public object GetVariable(
 			string name)
 		{
 			return variables[name].Value;
 		}
 
+		/// <summary>
+		///		Allows methods and types from an external library to be referenced
+		///		within an expression by providing the path to the location of the
+		///		assembly where they're defined.
+		/// </summary>
+		/// <param name="assemblyPath">
+		///		Absolute or relative path to the location of the referenced
+		///		assembly.
+		/// </param>
 		public void AddReference(
 			string assemblyPath)
 		{
 			references.Add(assemblyPath);
 		}
 
+		/// <summary>
+		///		Allows methods and types from an external library to be referenced
+		///		within an expression by providing a reference to the already 
+		///		loaded assembly from the calling code.
+		/// </summary>
+		/// <param name="assembly">
+		///		Assembly reference object from the calling scope.
+		/// </param>
 		public void AddReference(
 			Assembly assembly)
 		{
 			references.Add(assembly.Location);
 		}
 
+		/// <summary>
+		///		Allows namespaces to be added to expression execution context so
+		///		code within expression does not have to fully qualify classes.
+		/// </summary>
+		/// <param name="usingNamespace">
+		///		Fully qualified namespace to be added to the expression execution
+		///		context, e.g. "System.Collections.Generic".
+		/// </param>
 		public void AddUsing(
 			string usingNamespace)
 		{
 			usings.Add(usingNamespace);
 		}
 
+		/// <summary>
+		///		Allows a method definition to be added to the expression execution
+		///		context and referenced within the expression.
+		/// </summary>
+		/// <param name="methodDefinition">
+		///		Full definition of the method to add to the expression execution
+		///		context. Can be public or private, static or non-static.
+		/// </param>
 		public void AddMethod(
 			string methodDefinition)
 		{
@@ -275,6 +352,12 @@ namespace Data.Eval
 			return result;
 		}
 
+		/// <summary>
+		///		Executes the expression and returns the resulting value.
+		/// </summary>
+		/// <returns>
+		///		Value specified to be returned from the expression.
+		/// </returns>
 		public object Eval()
 		{
 			if (!callerInitialized)
@@ -286,6 +369,16 @@ namespace Data.Eval
 			return EvalInternal();
 		}
 
+		/// <summary>
+		///		Executes the expression and returns the resulting value, cast as
+		///		the specified object type.
+		/// </summary>
+		/// <typeparam name="T">
+		///		Object type to cast the return value as.
+		/// </typeparam>
+		/// <returns>
+		///		Value specified to be returned from the expression.
+		/// </returns>
 		public T Eval<T>()
 		{
 			if (!callerInitialized)
@@ -302,6 +395,16 @@ namespace Data.Eval
 			return cast(answer);
 		}
 
+		/// <summary>
+		///		Simplified static method to execute an expression and return the
+		///		resulting value.
+		/// </summary>
+		/// <param name="expression">
+		///		C# based string expression to be evaluated, e.g. "return 1+1".
+		/// </param>
+		/// <returns>
+		///		Value specified to be returned from the expression.
+		/// </returns>
 		public static object Eval(string expression)
 		{
 			string callerLocation = Assembly.GetCallingAssembly().Location;
@@ -309,6 +412,19 @@ namespace Data.Eval
 			return new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
+		/// <summary>
+		///		Simplified static method to execute an expression and return the
+		///		resulting value, cast as the specified object type.
+		/// </summary>
+		/// <typeparam name="T">
+		///		Object type to cast the return value as.
+		/// </typeparam>
+		/// <param name="expression">
+		///		C# based string expression to be evaluated, e.g. "return 1+1".
+		/// </param>
+		/// <returns>
+		///		Value specified to be returned from the expression.
+		/// </returns>
 		public static T Eval<T>(string expression)
 		{
 			string callerLocation = Assembly.GetCallingAssembly().Location;
@@ -316,6 +432,12 @@ namespace Data.Eval
 			return (T) new Evaluator(expression).EvalInternal(callerLocation);
 		}
 
+		/// <summary>
+		///		Executes the expression without returning a value. Resulting
+		///		new variable values that were updated inside the expression
+		///		can be subsequently accessed using <see cref="GetVariable(string)"/>
+		///		or <see cref="this[string]"/>. 
+		/// </summary>
 		public void Exec()
 		{
 			if (!callerInitialized)
