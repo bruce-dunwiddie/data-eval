@@ -69,3 +69,25 @@ eval.Exec();
 // write out Hello World
 Console.WriteLine(eval["message"]);
 ```
+
+### Add Callable Method
+
+```csharp
+Evaluator eval = new Evaluator("return IsFutureDate(date)");
+
+eval.AddMethod(@"
+	bool IsFutureDate(string date)
+	{
+		DateTime parsedDate;
+
+		bool parsed = DateTime.TryParse(date, out parsedDate);
+
+		return parsed && parsedDate > DateTime.Now;
+	}");
+
+eval["date"] = "1/1/1900";
+
+Console.WriteLine(eval.Eval<bool>());
+```
+
+[.Net Fiddle](https://dotnetfiddle.net/zHq8VW)
