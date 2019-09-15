@@ -91,3 +91,56 @@ Console.WriteLine(eval.Eval<bool>());
 ```
 
 [.Net Fiddle](https://dotnetfiddle.net/zHq8VW)
+
+### Speed
+
+For maximal speed, instances of the Evaluator class should be created with static strings referencing variables and be reused by just changing the value of the referenced variables, instead of dynamically changing the expression or creating new Evaluator instances, e.g.
+
+```csharp
+List<Customer> customers = new List<Customer>()
+{
+	new Customer()
+	{
+		ID = 1,
+		FirstName = "John",
+		LastName = "Smith",
+		OrderCount = 6,
+		TotalSales = 75000
+	},
+	new Customer()
+	{
+		ID = 2,
+		FirstName = "Bob",
+		LastName = "Jones",
+		OrderCount = 3,
+		TotalSales = 25000
+	}
+};
+
+Evaluator highValuedCheck = new Evaluator(
+	// can now have this rule be editable outside of the application
+	"return customer.OrderCount >= 5 || customer.TotalSales >= 100000");
+
+List<Customer> highValuedCustomers = customers.Where(
+	c => {
+
+		highValuedCheck["customer"] = c;
+
+		return highValuedCheck.Eval<bool>();
+
+	}).ToList();
+```
+
+#### .Net Framework
+
+- 18 million evaluations per second
+- 4.5 million evaluations per second with one referenced variable
+- 50 compilations of new expressions per second
+- 200 thousand evaluations per second when creating new Evaluator instances each time but on a previously seen expression
+
+#### .Net Core
+
+- 28 million evaluations per second
+- 4 million evaluations per second with one referenced variable
+- 50 compilations of new expressions per second
+- 400 thousand evaluations per second when creating new Evaluator instances each time but on a previously seen expression
