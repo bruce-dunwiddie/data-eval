@@ -95,6 +95,8 @@ namespace Data.Eval
 					Type = value.GetType(),
 					Value = value
 				};
+
+				initialized = false;
 			}
 		}
 
@@ -127,6 +129,8 @@ namespace Data.Eval
 			string assemblyPath)
 		{
 			references.Add(assemblyPath);
+
+			initialized = false;
 		}
 
 		/// <summary>
@@ -141,6 +145,8 @@ namespace Data.Eval
 			Assembly assembly)
 		{
 			references.Add(assembly.Location);
+
+			initialized = false;
 		}
 
 		/// <summary>
@@ -155,6 +161,8 @@ namespace Data.Eval
 			string usingNamespace)
 		{
 			usings.Add(usingNamespace);
+
+			initialized = false;
 		}
 
 		/// <summary>
@@ -169,6 +177,8 @@ namespace Data.Eval
 			string methodDefinition)
 		{
 			methods.Add(methodDefinition);
+
+			initialized = false;
 		}
 
 		private void InitEval(string caller)
@@ -198,6 +208,13 @@ namespace Data.Eval
 			else
 			{
 				references.Add(caller);
+
+				// add references to containing assemblies for all used variable types
+				variables
+					.Select(v => v.Value.Type.Assembly.Location)
+					.Distinct()
+					.ToList()
+					.ForEach(a => references.Add(a));
 
 				execution = new Execution();
 
