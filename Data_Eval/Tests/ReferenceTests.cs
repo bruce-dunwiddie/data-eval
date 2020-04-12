@@ -5,6 +5,9 @@ using System.Text;
 using NUnit.Framework;
 
 using Data.Eval;
+using Data.Eval.Compilation;
+
+using TestExternalReference;
 
 namespace Tests
 {
@@ -57,6 +60,43 @@ namespace Tests
 			eval["message"] = "";
 			eval.Exec();
 			Assert.AreEqual("Hello World", eval["message"]);
+		}
+
+		[Test]
+		public void Evaluator_ExecAddReferenceRequired()
+		{
+			// this should fail without the call to AddReference
+			var eval = new Evaluator("message = ExampleClass.HelloWorld");
+			eval.AddUsing("TestExternalReference");
+			eval["message"] = "";
+
+			CompilationException ex = Assert.Throws<CompilationException>(
+				delegate
+				{
+					eval.Exec();
+				});
+
+			Assert.IsTrue(
+				ex.Message.Contains("The type or namespace name 'TestExternalReference' could not be found (are you missing a using directive or an assembly reference?)"));
+		}
+
+		[Test]
+		public void Evaluator_ExecAddReferenceFromVariable()
+		{
+			// this should not fail even without the call to AddReference
+			var eval = new Evaluator("return person.Name");
+
+			var person = new ExampleType()
+			{
+				ID = 1,
+				Name = "John"
+			};
+
+			eval["person"] = person;
+
+			var name = eval.Eval<string>();
+
+			Assert.AreEqual("John", name);
 		}
 	}
 }
