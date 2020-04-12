@@ -101,6 +101,44 @@ namespace Data.Eval
 		}
 
 		/// <summary>
+		///		Sets the value of a variable referenced within the expression prior
+		///		to evaluation. This override allows specifying the Type of the variable
+		///		instead of trying to introspect it. Also allows for passing null as the
+		///		value.
+		/// </summary>
+		/// <param name="name">
+		///		Name of the variable referenced within the expression.
+		/// </param>
+		/// <param name="value">
+		///		Value of the variable that should be used when evaluating the expression.
+		/// </param>
+		/// <param name="type">
+		///		The variable Type.
+		/// </param>
+		public void SetVariable(
+			string name,
+			object value,
+			Type type)
+		{
+			// TODO: check variable naming standards
+
+			if (variables.ContainsKey(name))
+			{
+				variables[name].Value = value;
+			}
+			else
+			{
+				variables[name] = new Variable
+				{
+					Type = type,
+					Value = value
+				};
+
+				initialized = false;
+			}
+		}
+
+		/// <summary>
 		///		Returns the value of a variable referenced within the
 		///		expression after evaluation.
 		/// </summary>
