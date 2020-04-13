@@ -181,5 +181,19 @@ namespace Tests
 
 			Assert.AreEqual("something", evaluator.Eval<string>());
 		}
+
+		[Test]
+		public void Evaluator_NullVariableComparison()
+		{
+			var evaluator = new Evaluator(
+				"return test == null");
+
+			evaluator.SetVariable(
+				"test",
+				null,
+				typeof(string));
+
+			Assert.IsTrue(evaluator.Eval<bool>());
+		}
 	}
 }
