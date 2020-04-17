@@ -321,6 +321,13 @@ namespace Data.Eval
 			{
 				references.Add(caller);
 
+				// add references to containing assemblies for all used variable types
+				variables
+					.Select(v => v.Value.Type.Assembly.Location)
+					.Distinct()
+					.ToList()
+					.ForEach(a => references.Add(a));
+
 				execution = new Execution();
 
 				Compiler compiler = new Compiler();
