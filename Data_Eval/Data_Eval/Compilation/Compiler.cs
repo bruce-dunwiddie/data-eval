@@ -45,7 +45,10 @@ namespace Data.Eval.Compilation
 					Path.Combine(assemblyPath, "System.Runtime.dll"),
 					Path.Combine(assemblyPath, "System.Linq.Expressions.dll"),
 					Path.Combine(assemblyPath, "Microsoft.CSharp.dll"),
-					Path.Combine(assemblyPath, "netstandard.dll")
+					Path.Combine(assemblyPath, "netstandard.dll"),
+
+					// adding other standard references for convenience
+					Path.Combine(assemblyPath, "System.Linq.dll")
 				})
 				.Select(r => MetadataReference.CreateFromFile(r))
 				.ToArray();

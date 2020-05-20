@@ -195,5 +195,44 @@ namespace Tests
 
 			Assert.IsTrue(evaluator.Eval<bool>());
 		}
+
+		[Test]
+		public void Evaluator_AnonymousType()
+		{
+			var test = new
+			{
+				prop = "something"
+			};
+
+			var evaluator = new Evaluator(
+				"return a.prop");
+
+			// TODO: handle array of anonymous type
+
+			// TODO: recursively handle inner anonymous type
+
+			evaluator["a"] = test;
+
+			Assert.AreEqual("something", evaluator.Eval<string>());
+		}
+
+		[Test]
+		public void Evaluator_LinqReference()
+		{
+			var list = new string[]
+			{
+				"one",
+				"two"
+			};
+
+			var evaluator = new Evaluator(
+				"return list.Where(s => s.StartsWith(\"o\")).Count()");
+
+			evaluator.SetVariable(
+				"list",
+				list);
+
+			Assert.AreEqual(1, evaluator.Eval<int>());
+		}
 	}
 }
