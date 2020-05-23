@@ -260,7 +260,9 @@ namespace Data.Eval
 
 				Type newType = compiler.Compile(
 					classText,
-					references);
+					references,
+					"EvalAssembly",
+					"CustomEvaluator");
 
 				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
 					newType);
@@ -334,7 +336,9 @@ namespace Data.Eval
 
 				Type newType = compiler.Compile(
 					classText,
-					references);
+					references,
+					"EvalAssembly",
+					"CustomEvaluator");
 
 				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
 					newType);

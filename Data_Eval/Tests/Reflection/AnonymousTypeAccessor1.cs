@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tests.Reflection
 {
 	public sealed class AnonymousTypeAccessor1
 	{
-		private static System.Collections.Generic.Dictionary<string, Func<object, object>> properties = null;
+		private static Dictionary<string, Func<object, object>> properties = null;
 
 		private object innerObject = null;
 
