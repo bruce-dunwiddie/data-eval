@@ -2,11 +2,11 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Data_Eval/.vs/
+**/.vs/
 /Data_Eval/*/bin
 /Data_Eval/*/obj
 /Data_Eval/packages
 /Data_Eval/Tests/.sonarqube
 *.user
 *.nupkg
-/.vs
+*.snupkg
