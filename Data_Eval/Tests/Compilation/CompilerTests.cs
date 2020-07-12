@@ -21,7 +21,9 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				ResourceReader.CSharpSimpleExpression);
+				ResourceReader.CSharpSimpleExpression,
+				"EvalAssembly",
+				"CustomEvaluator");
 
 			Assert.IsNotNull(newType);
 		}
@@ -32,7 +34,9 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				ResourceReader.CSharpSimpleVariable);
+				ResourceReader.CSharpSimpleVariable,
+				"EvalAssembly",
+				"CustomEvaluator");
 
 			Assert.IsNotNull(newType);
 		}
@@ -43,7 +47,9 @@ namespace Tests.Compilation
 			var compiler = new Compiler();
 
 			Type newType = compiler.Compile(
-				ResourceReader.CSharpNullableInt);
+				ResourceReader.CSharpNullableInt,
+				"EvalAssembly",
+				"CustomEvaluator");
 
 			Assert.IsNotNull(newType);
 		}
@@ -66,7 +72,10 @@ namespace Tests.Compilation
 			CompilationException ex = Assert.Throws<CompilationException>(
 				delegate
 				{
-					compiler.Compile(codeToCompile);
+					compiler.Compile(
+						codeToCompile,
+						"EvalAssembly",
+						"CustomEvaluator");
 				});
 
 			Assert.AreEqual("Class failed to compile.\n\tLine 6: ; expected", ex.Message);

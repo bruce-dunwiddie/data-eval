@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>Data.Eval</id>
-		<version>2.4.4</version>
+		<version>2.4.5</version>
 		<title>Data.Eval</title>
 		<authors>Bruce Dunwiddie</authors>
 		<owners>shriop</owners>
@@ -10,12 +10,12 @@
 		<projectUrl>https://github.com/bruce-dunwiddie/data-eval</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>.Net Library for Evaluating Expressions at Runtime</description>
-		<releaseNotes>Added ability to explicitly specify Type on expression variables.</releaseNotes>
+		<releaseNotes>Upgraded version on Microsoft.CodeAnalysis dependencies.</releaseNotes>
 		<copyright>Copyright © 2020</copyright>
 		<tags>eval expression evaluator compile</tags>
 		<dependencies>
-			<dependency id="Microsoft.CodeAnalysis" version="3.2.1" />
-			<dependency id="Microsoft.CodeAnalysis.CSharp" version="3.2.1" />
+			<dependency id="Microsoft.CodeAnalysis" version="3.6.0" />
+			<dependency id="Microsoft.CodeAnalysis.CSharp" version="3.6.0" />
 			<dependency id="System.Collections.Immutable" version="1.5.0" />
 		</dependencies>
 	</metadata>

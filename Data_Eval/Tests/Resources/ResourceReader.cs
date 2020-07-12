@@ -31,6 +31,14 @@ namespace Tests.Resources
 			}
 		}
 
+		public static string SimpleAnonymousTestWrapper
+		{
+			get
+			{
+				return ReadResourceFile("SimpleAnonymousTestWrapper.txt");
+			}
+		}
+
 		private static string ReadResourceFile(string fileName)
 		{
 			using (StreamReader reader = new StreamReader("./Resources/" + fileName))

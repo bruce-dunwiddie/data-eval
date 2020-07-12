@@ -13,16 +13,22 @@ namespace Data.Eval.Compilation
 	internal sealed class Compiler
 	{
 		public Type Compile(
-			string classText)
+			string classText,
+			string assemblyName,
+			string className)
 		{
 			return Compile(
 				classText,
-				new List<string>());
+				new List<string>(),
+				assemblyName,
+				className);
 		}
 
 		public Type Compile(
 			string classText,
-			List<string> referenceAssemblies)
+			List<string> referenceAssemblies,
+			string assemblyName,
+			string className)
 		{
 			// https://stackoverflow.com/questions/23907305/roslyn-has-no-reference-to-system-runtime
 
@@ -45,7 +51,10 @@ namespace Data.Eval.Compilation
 					Path.Combine(assemblyPath, "System.Runtime.dll"),
 					Path.Combine(assemblyPath, "System.Linq.Expressions.dll"),
 					Path.Combine(assemblyPath, "Microsoft.CSharp.dll"),
-					Path.Combine(assemblyPath, "netstandard.dll")
+					Path.Combine(assemblyPath, "netstandard.dll"),
+
+					// adding other standard references for convenience
+					Path.Combine(assemblyPath, "System.Linq.dll")
 				})
 				.Select(r => MetadataReference.CreateFromFile(r))
 				.ToArray();
@@ -53,7 +62,7 @@ namespace Data.Eval.Compilation
 			SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(classText);
 
 			CSharpCompilation compilation = CSharpCompilation.Create(
-				"EvalAssembly",
+				assemblyName,
 				new[] { syntaxTree },
 				references,
 				new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
@@ -82,7 +91,7 @@ namespace Data.Eval.Compilation
 				{
 					Assembly compiledAssembly = Assembly.Load(ms.ToArray());
 
-					return compiledAssembly.GetType("CustomEvaluator");
+					return compiledAssembly.GetType(className);
 				}
 			}
 		}
