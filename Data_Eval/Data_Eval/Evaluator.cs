@@ -221,85 +221,25 @@ namespace Data.Eval
 
 		private void InitEval(string caller)
 		{
-			CSharpCodeWriter writer = new CSharpCodeWriter();
-
-			string classText = writer.GetClassTextWithReturn(
-				expression,
-				variables.Select(entry => new CSharpCodeWriter.Variable
-				{
-					Name = entry.Key,
-					Type = entry.Value.Type
-				}).ToList(),
-				usings,
-				methods);
-
-			// instead of taking the everytime hit of a synchronized lock
-			// choosing to take the infrequent possible hit of simultaneous
-			// calls creating multiple types with the same class text
-			// only the last one's definition will be cached for the next caller
-			bool alreadyCompiled = compiledTypes.ContainsKey(classText);
-
-			if (alreadyCompiled)
-			{
-				execution = compiledTypes[classText];
-			}
-			else
-			{
-				references.Add(caller);
-
-				// add references to containing assemblies for all used variable types
-				variables
-					.Select(v => v.Value.Type.Assembly.Location)
-					.Distinct()
-					.ToList()
-					.ForEach(a => references.Add(a));
-
-				execution = new Execution();
-
-				Compiler compiler = new Compiler();
-
-				Type newType = compiler.Compile(
-					classText,
-					references,
-					"EvalAssembly",
-					"CustomEvaluator");
-
-				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
-					newType);
-
-				foreach (string key in variables.Keys)
-				{
-					Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
-						newType,
-						key);
-
-					Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
-						newType,
-						key);
-
-					execution.Variables[key] = new ExecutionVariable
-					{
-						Getter = getter,
-						Setter = setter,
-						Type = variables[key].Type
-					};
-				}
-
-				execution.Evaluate = new ExecuteInstanceMethodExpression().GetFuncWithReturn(
-					newType,
-					"Eval");
-
-				compiledTypes[classText] = execution;
-			}
-
-			initialized = true;
+			Init(
+				caller,
+				hasReturn: true);
 		}
 
 		private void InitExec(string caller)
 		{
+			Init(
+				caller,
+				hasReturn: false);
+		}
+
+		private void Init(
+			string caller,
+			bool hasReturn)
+		{
 			CSharpCodeWriter writer = new CSharpCodeWriter();
 
-			string classText = writer.GetClassTextWithNoReturn(
+			string classText = writer.GetClassText(
 				expression,
 				variables.Select(entry => new CSharpCodeWriter.Variable
 				{
@@ -307,7 +247,8 @@ namespace Data.Eval
 					Type = entry.Value.Type
 				}).ToList(),
 				usings,
-				methods);
+				methods,
+				withReturn: hasReturn);
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
@@ -361,9 +302,18 @@ namespace Data.Eval
 					};
 				}
 
-				execution.Execute = new ExecuteInstanceMethodExpression().GetFuncWithNoReturn(
-					newType,
-					"Exec");
+				if (hasReturn)
+				{
+					execution.Evaluate = new ExecuteInstanceMethodExpression().GetFuncWithReturn(
+						newType,
+						"Eval");
+				}
+				else
+				{
+					execution.Execute = new ExecuteInstanceMethodExpression().GetFuncWithNoReturn(
+						newType,
+						"Eval");
+				}
 
 				compiledTypes[classText] = execution;
 			}

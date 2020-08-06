@@ -30,8 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="CodeWriting\InternalTypeAccessorWriter.cs" />
-	  <Compile Remove="Invocation\Expressions\WrapperClassConstructorExpression.cs" />
+	  <Compile Include="Reflection\PropertyFinder.cs" />
 	</ItemGroup>
 
 </Project>

@@ -6,32 +6,30 @@ namespace Data.Eval.CodeWriting
 {
 	internal sealed class CSharpCodeWriter
 	{
-		public string GetClassTextWithReturn(
+		public string GetClassText(
 			string expression,
 			List<Variable> variables,
 			List<string> usings,
-			List<string> methods)
+			List<string> methods,
+			bool withReturn)
 		{
-			return GetClassText(
-				expression,
-				variables,
-				usings,
-				methods,
-				"public object Eval()");
-		}
+			string signature = null;
 
-		public string GetClassTextWithNoReturn(
-			string expression,
-			List<Variable> variables,
-			List<string> usings,
-			List<string> methods)
-		{
+			if (withReturn)
+			{
+				signature = "public object Eval()";
+			}
+			else
+			{
+				signature = "public void Eval()";
+			}
+
 			return GetClassText(
 				expression,
 				variables,
 				usings,
 				methods,
-				"public void Exec()");
+				signature);
 		}
 
 		private string GetClassText(

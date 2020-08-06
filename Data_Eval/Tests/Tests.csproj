@@ -8,15 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Reflection\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="CodeWriting\AnonymousTypeAccessorWriterTests.cs" />
-    <Compile Remove="Invocation\Expressions\WrapperClassConstructorExpressionTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
