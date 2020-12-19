@@ -69,6 +69,18 @@ namespace Data.Eval
 		}
 
 		/// <summary>
+		///		Returns a list of all the variables that have been added to the
+		///		Evaluator context.
+		/// </summary>
+		public List<string> VariableNames
+		{
+			get
+			{
+				return variables.Keys.ToList();
+			}
+		}
+
+		/// <summary>
 		///		Sets the value of a variable referenced within the expression prior
 		///		to evaluation.
 		/// </summary>
