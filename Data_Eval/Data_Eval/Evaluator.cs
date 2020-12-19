@@ -94,22 +94,10 @@ namespace Data.Eval
 			string name,
 			object value)
 		{
-			// TODO: check variable naming standards
-
-			if (variables.ContainsKey(name))
-			{
-				variables[name].Value = value;
-			}
-			else
-			{
-				variables[name] = new Variable
-				{
-					Type = value.GetType(),
-					Value = value
-				};
-
-				initialized = false;
-			}
+			SetVariable(
+				name,
+				value,
+				value.GetType());
 		}
 
 		/// <summary>
@@ -140,14 +128,39 @@ namespace Data.Eval
 			}
 			else
 			{
-				variables[name] = new Variable
+				if (IsValidVariableName(name))
 				{
-					Type = type,
-					Value = value
-				};
+					variables[name] = new Variable
+					{
+						Type = type,
+						Value = value
+					};
 
-				initialized = false;
+					initialized = false;
+				}
+				else
+				{
+					throw new ArgumentException("Invalid value passed in for variable name. " +
+						"Valid variable names must start with a letter or underscore, and not contain any whitespace.");
+				}
 			}
+		}
+
+		private static bool IsValidVariableName(string text)
+		{
+			// https://stackoverflow.com/a/45201527
+
+			// doesn't allow every single valid C# variable, but it's good enough
+			// for this purpose
+
+			if (string.IsNullOrEmpty(text))
+				return false;
+			if (!char.IsLetter(text[0]) && text[0] != '_')
+				return false;
+			for (int ix = 1; ix < text.Length; ++ix)
+				if (!char.IsLetterOrDigit(text[ix]) && text[ix] != '_')
+					return false;
+			return true;
 		}
 
 		/// <summary>

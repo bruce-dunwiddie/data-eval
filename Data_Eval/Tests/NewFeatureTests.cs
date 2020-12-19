@@ -26,7 +26,31 @@ namespace Tests
 			Assert.IsTrue(evaluator.VariableNames.Contains("b"));
 
 			Assert.AreEqual(3, evaluator.Eval());
+		}
 
+		[Test]
+		public void Evaluator_FailVariableName()
+		{
+			var evaluator = new Evaluator("return 1");
+
+			Assert.Throws<ArgumentException>(
+				delegate { evaluator["1"] = 1; },
+				"Invalid value passed in for variable name. " +
+					"Valid variable names must start with a letter or underscore, and not contain any whitespace."
+				);
+		}
+
+		[Test]
+		public void Evaluator_SuccessfulVariableNames()
+		{
+			var evaluator = new Evaluator("return 1");
+
+			Assert.DoesNotThrow(
+				delegate { evaluator["a"] = 1; });
+			Assert.DoesNotThrow(
+				delegate { evaluator["a1"] = 1; });
+			Assert.DoesNotThrow(
+				delegate { evaluator["_a"] = 1; });
 		}
 	}
 }
