@@ -6,32 +6,30 @@ namespace Data.Eval.CodeWriting
 {
 	internal sealed class CSharpCodeWriter
 	{
-		public string GetClassTextWithReturn(
+		public string GetClassText(
 			string expression,
 			List<Variable> variables,
 			List<string> usings,
-			List<string> methods)
+			List<string> methods,
+			bool withReturn)
 		{
-			return GetClassText(
-				expression,
-				variables,
-				usings,
-				methods,
-				"public object Eval()");
-		}
+			string signature = null;
 
-		public string GetClassTextWithNoReturn(
-			string expression,
-			List<Variable> variables,
-			List<string> usings,
-			List<string> methods)
-		{
+			if (withReturn)
+			{
+				signature = "public object Eval()";
+			}
+			else
+			{
+				signature = "public void Eval()";
+			}
+
 			return GetClassText(
 				expression,
 				variables,
 				usings,
 				methods,
-				"public void Exec()");
+				signature);
 		}
 
 		private string GetClassText(
@@ -62,19 +60,33 @@ namespace Data.Eval.CodeWriting
 				classText.Append("\r\n");
 			}
 
-			classText.Append("public sealed class CustomEvaluator{\r\n");
+			classText.Append("public sealed class CustomEvaluator\r\n{\r\n");
 
-			if (variables != null)
+			Dictionary<string, string> wrappedClasses = new Dictionary<string, string>();
+
+			if (variables != null && variables.Count > 0)
 			{
 				CSharpClassNameFormatter formatter = new CSharpClassNameFormatter();
 
 				foreach (Variable variable in variables)
 				{
+					string variableType = formatter.GetFullName(variable.Type);
+
 					classText.AppendFormat(
 						"\tpublic {0} {1};\r\n",
-						formatter.GetFullName(variable.Type),
+						variableType,
 						variable.Name);
+
+					if (variable.Type.IsNotPublic &&
+						!wrappedClasses.ContainsKey(variableType))
+					{
+						wrappedClasses[variableType] = new InternalTypeAccessorWriter().GetClassTest(
+							variable.Type,
+							variableType);
+					}
 				}
+
+				classText.Append("\t\r\n");
 			}
 
 			if (methods != null)
@@ -88,7 +100,7 @@ namespace Data.Eval.CodeWriting
 			}
 
 			classText.AppendFormat(
-				"\t{0}{{\r\n",
+				"\t{0}\r\n\t{{\r\n",
 				signature);
 
 			classText.AppendFormat(
@@ -96,6 +108,18 @@ namespace Data.Eval.CodeWriting
 				expression);
 
 			classText.Append("\t}\r\n}\r\n");
+
+			if (wrappedClasses.Count > 0)
+			{
+				classText.Append("\r\n");
+				classText.Append(InternalTypeAccessorWriter.GetDependencyClasses());
+
+				foreach (string wrappedClassDefinition in wrappedClasses.Values)
+				{
+					classText.Append("\r\n");
+					classText.Append(wrappedClassDefinition);
+				}
+			}
 
 			return classText.ToString();
 		}

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Tests.Reflection
 {
+	/// <summary>
+	///		This is a hand created proof of concept class for the code that will need to be
+	///		created dynamically to access properties on anonymous types.
+	/// </summary>
 	public sealed class AnonymousTypeAccessor1
 	{
 		private static Dictionary<string, Func<object, object>> properties = null;

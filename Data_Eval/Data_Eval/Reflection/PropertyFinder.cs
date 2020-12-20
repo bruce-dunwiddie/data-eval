@@ -1,19 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Data.Eval.Reflection
 {
 	internal sealed class PropertyFinder
 	{
-		public Dictionary<string, Type> GetProperties(Type type)
+		/// <summary>
+		///		Returns a Dictionary of the public declared instance properties of
+		///		a given Type.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public System.Collections.Generic.Dictionary<string, Type> GetProperties(Type type)
 		{
 			return type.GetProperties(
-				BindingFlags.GetProperty |
-				BindingFlags.Instance |
-				BindingFlags.Public |
-				BindingFlags.DeclaredOnly)
+				System.Reflection.BindingFlags.GetProperty |
+				System.Reflection.BindingFlags.Instance |
+				System.Reflection.BindingFlags.Public |
+				System.Reflection.BindingFlags.DeclaredOnly)
 				.ToDictionary(p => p.Name, p => p.PropertyType);
 		}
 	}

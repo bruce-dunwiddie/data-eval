@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using NUnit.Framework;
@@ -27,6 +28,10 @@ namespace Tests.CodeWriting
 			var classText = writer.GetClassTest(
 				test.GetType(), 
 				"SimpleAnonymousTestWrapper");
+
+			File.WriteAllText(
+				"./SimpleAnonymousTestWrapper.cs",
+				classText);
 
 			Assert.AreEqual(
 				ResourceReader.SimpleAnonymousTestWrapper.Replace("\r\n", "\n"),

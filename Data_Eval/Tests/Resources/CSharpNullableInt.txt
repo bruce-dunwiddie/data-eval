@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
 
-public sealed class CustomEvaluator{
+public sealed class CustomEvaluator
+{
 	public System.Int32? intValue;
-	public object Eval(){
+
+	public object Eval()
+	{
 		return intValue + 1;
 	}
 }

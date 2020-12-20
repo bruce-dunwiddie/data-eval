@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 
-public sealed class CustomEvaluator{
-	public object Eval(){
+public sealed class CustomEvaluator
+{
+	public object Eval()
+	{
 		return 1;
 	}
 }
