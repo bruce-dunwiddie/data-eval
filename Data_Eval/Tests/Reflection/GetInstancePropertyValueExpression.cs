@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Tests.Reflection
 {
@@ -10,22 +8,22 @@ namespace Tests.Reflection
 			Type instanceType,
 			string memberName)
 		{
-			PropertyInfo member = instanceType.GetProperty(
+			System.Reflection.PropertyInfo member = instanceType.GetProperty(
 				memberName,
-				BindingFlags.Public |
-				BindingFlags.Instance);
+				System.Reflection.BindingFlags.Public |
+				System.Reflection.BindingFlags.Instance);
 
-			ParameterExpression instance = 
-				Expression.Parameter(typeof(object), "i");
+			System.Linq.Expressions.ParameterExpression instance =
+				System.Linq.Expressions.Expression.Parameter(typeof(object), "i");
 
-			MemberExpression memberExp = 
-				Expression.Property(
-					Expression.Convert(instance, member.DeclaringType),
+			System.Linq.Expressions.MemberExpression memberExp =
+				System.Linq.Expressions.Expression.Property(
+					System.Linq.Expressions.Expression.Convert(instance, member.DeclaringType),
 					member);
 
-			Expression<Func<object, object>> getter = 
-				Expression.Lambda<Func<object, object>>(
-					Expression.Convert(memberExp, typeof(object)),
+			System.Linq.Expressions.Expression<Func<object, object>> getter =
+				System.Linq.Expressions.Expression.Lambda<Func<object, object>>(
+					System.Linq.Expressions.Expression.Convert(memberExp, typeof(object)),
 					instance);
 
 			Func<object, object> func = getter.Compile();

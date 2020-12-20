@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -69,6 +70,25 @@ namespace Data.Eval
 		}
 
 		/// <summary>
+		///		Returns a list of all the variables that have been added to the
+		///		Evaluator context.
+		/// </summary>
+		public List<string> VariableNames
+		{
+			get
+			{
+				return variables.Keys.ToList();
+			}
+		}
+
+		/// <summary>
+		///		If set, the definition of the internal evaluation class will be saved
+		///		out to this file upon the first call to Exec or Eval. This file can be
+		///		used to troubleshoot syntax errors.
+		/// </summary>
+		public string DebugFileOutputName { get; set; }
+
+		/// <summary>
 		///		Sets the value of a variable referenced within the expression prior
 		///		to evaluation.
 		/// </summary>
@@ -82,22 +102,10 @@ namespace Data.Eval
 			string name,
 			object value)
 		{
-			// TODO: check variable naming standards
-
-			if (variables.ContainsKey(name))
-			{
-				variables[name].Value = value;
-			}
-			else
-			{
-				variables[name] = new Variable
-				{
-					Type = value.GetType(),
-					Value = value
-				};
-
-				initialized = false;
-			}
+			SetVariable(
+				name,
+				value,
+				value.GetType());
 		}
 
 		/// <summary>
@@ -120,22 +128,45 @@ namespace Data.Eval
 			object value,
 			Type type)
 		{
-			// TODO: check variable naming standards
-
 			if (variables.ContainsKey(name))
 			{
 				variables[name].Value = value;
 			}
 			else
 			{
-				variables[name] = new Variable
+				if (IsValidVariableName(name))
 				{
-					Type = type,
-					Value = value
-				};
+					variables[name] = new Variable
+					{
+						Type = type,
+						Value = value
+					};
 
-				initialized = false;
+					initialized = false;
+				}
+				else
+				{
+					throw new ArgumentException("Invalid value passed in for variable name. " +
+						"Valid variable names must start with a letter or underscore, and not contain any whitespace.");
+				}
 			}
+		}
+
+		private static bool IsValidVariableName(string text)
+		{
+			// https://stackoverflow.com/a/45201527
+
+			// doesn't allow every single valid C# variable, but it's good enough
+			// for this purpose
+
+			if (string.IsNullOrEmpty(text))
+				return false;
+			if (!char.IsLetter(text[0]) && text[0] != '_')
+				return false;
+			for (int ix = 1; ix < text.Length; ++ix)
+				if (!char.IsLetterOrDigit(text[ix]) && text[ix] != '_')
+					return false;
+			return true;
 		}
 
 		/// <summary>
@@ -250,6 +281,13 @@ namespace Data.Eval
 				methods,
 				withReturn: hasReturn);
 
+			if (DebugFileOutputName != null)
+			{
+				File.WriteAllText(
+					DebugFileOutputName,
+					classText);
+			}
+
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
 			// calls creating multiple types with the same class text
@@ -335,35 +373,15 @@ namespace Data.Eval
 
 			object newObject = execution.Constructor();
 
-			if (execution.Variables.Count > 0)
-			{
-				foreach (var variable in execution.Variables)
-				{
-					Action<object, object> set = variable.Value.Setter;
-
-					object variableValue = variables[variable.Key].Value;
-
-					set(
-						newObject,
-						variableValue);
-				}
-			}
+			SetVariableValuesOnExecutionContext(
+				newObject);
 
 			object result = execution.Evaluate(
 				newObject,
 				new object[] { });
 
-			if (execution.Variables.Count > 0)
-			{
-				foreach (var variable in execution.Variables)
-				{
-					Func<object, object> get = variable.Value.Getter;
-
-					object variableValue = get(newObject);
-
-					variables[variable.Key].Value = variableValue;
-				}
-			}
+			GetVariableValuesFromExecutionContext(
+				newObject);
 
 			return result;
 		}
@@ -469,6 +487,20 @@ namespace Data.Eval
 
 			object newObject = execution.Constructor();
 
+			SetVariableValuesOnExecutionContext(
+				newObject);
+
+			execution.Execute(
+				newObject,
+				new object[] { });
+
+			GetVariableValuesFromExecutionContext(
+				newObject);
+		}
+
+		private void SetVariableValuesOnExecutionContext(
+			object newObject)
+		{
 			if (execution.Variables.Count > 0)
 			{
 				foreach (var variable in execution.Variables)
@@ -482,11 +514,11 @@ namespace Data.Eval
 						variableValue);
 				}
 			}
+		}
 
-			execution.Execute(
-				newObject,
-				new object[] { });
-
+		private void GetVariableValuesFromExecutionContext(
+			object newObject)
+		{
 			if (execution.Variables.Count > 0)
 			{
 				foreach (var variable in execution.Variables)

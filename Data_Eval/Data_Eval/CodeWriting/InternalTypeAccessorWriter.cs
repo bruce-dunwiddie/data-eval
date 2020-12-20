@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using Data.Eval.Reflection;
@@ -24,113 +25,124 @@ namespace Data.Eval.CodeWriting
 
 			CSharpClassNameFormatter formatter = new CSharpClassNameFormatter();
 
-			foreach (KeyValuePair<string, Type> property in properties)
+			List<string> keys = properties.Keys.ToList();
+
+			for (int i = 0; i < keys.Count; i++)
 			{
+				string propertyName = keys[i];
+				Type propertyType = properties[propertyName];
+
+				if (i > 0)
+				{
+					propertiesText.Append("\r\n\t\r\n\t");
+				}
+
 				propertiesText.Append(
-	$@"public {formatter.GetFullName(property.Value)} {property.Key}
+$@"public {formatter.GetFullName(propertyType)} {propertyName}
 	{{
 		get
 		{{
-			return ({formatter.GetFullName(property.Value)})GetValue(""{property.Key}"");
+			return ({formatter.GetFullName(propertyType)})GetValue(""{propertyName}"");
 		}}
 	}}");
 			}
 
+			// TODO: should wrapper class implement any interfaces or extend from any classes
+			// that wrapped class implements?
+
 			string classText =
-$@"using System;
-using System.Linq;
-
-public sealed class {className}
+$@"public sealed class {className}
 {{
-	private static Dictionary<string, Func<object, object>> properties = null;
-
+	private static System.Collections.Generic.Dictionary<string, Func<object, object>> properties = null;
+	
 	private object innerObject = null;
-
+	
 	public {className}(object innerObject)
 	{{
 		if (properties == null)
 		{{
-			properties = new ReadonlyPropertyAccessor().GetProperties(innerObject.GetType());
+			properties = new ReadonlyPropertyAccessor()
+				.GetProperties(
+					innerObject.GetType());
 		}}
 
 		this.innerObject = innerObject;
 	}}
-
+	
 	{propertiesText}
-
+	
 	private object GetValue(string property)
 	{{
 		return properties[property](innerObject);
 	}}
-
-	{GetDependencyClasses()}
 }}
 ";
 
 			return classText;
 		}
 
-		private string GetDependencyClasses()
+		public static string GetDependencyClasses()
 		{
 			return
 	@"internal sealed class ReadonlyPropertyAccessor
+{
+	public System.Collections.Generic.Dictionary<string, Func<object, object>> GetProperties(Type type)
 	{
-		public Dictionary<string, Func<object, object>> GetProperties(Type type)
-		{
-			PropertyFinder finder = new PropertyFinder();
+		PropertyFinder finder = new PropertyFinder();
 
-			GetInstancePropertyValueExpression getGenerator = new GetInstancePropertyValueExpression();
+		GetInstancePropertyValueExpression getGenerator = new GetInstancePropertyValueExpression();
 
-			Dictionary<string, Type> properties = finder.GetProperties(type);
+		System.Collections.Generic.Dictionary<string, Type> properties = finder.GetProperties(type);
 
-			return properties.ToDictionary(
-				keyValue => keyValue.Key,
-				keyValue => getGenerator.GetFunc(type, keyValue.Key));
-		}
+		return properties.ToDictionary(
+			keyValue => keyValue.Key,
+			keyValue => getGenerator.GetFunc(type, keyValue.Key));
 	}
+}
 
-	internal sealed class PropertyFinder
+internal sealed class PropertyFinder
+{
+	public System.Collections.Generic.Dictionary<string, Type> GetProperties(Type type)
 	{
-		public Dictionary<string, Type> GetProperties(Type type)
-		{
-			return type.GetProperties(
-				BindingFlags.GetProperty |
-				BindingFlags.Instance |
-				BindingFlags.Public |
-				BindingFlags.DeclaredOnly)
-				.ToDictionary(p => p.Name, p => p.PropertyType);
-		}
+		return type.GetProperties(
+			System.Reflection.BindingFlags.GetProperty |
+			System.Reflection.BindingFlags.Instance |
+			System.Reflection.BindingFlags.Public |
+			System.Reflection.BindingFlags.DeclaredOnly)
+			.ToDictionary(p => p.Name, p => p.PropertyType);
 	}
+}
 
-	internal sealed class GetInstancePropertyValueExpression
+internal sealed class GetInstancePropertyValueExpression
+{
+	public Func<object, object> GetFunc(
+		Type instanceType,
+		string memberName)
 	{
-		public Func<object, object> GetFunc(
-			Type instanceType,
-			string memberName)
-		{
-			PropertyInfo member = instanceType.GetProperty(
-				memberName,
-				BindingFlags.Public |
-				BindingFlags.Instance);
+		System.Reflection.PropertyInfo member = instanceType.GetProperty(
+			memberName,
+			System.Reflection.BindingFlags.Public |
+			System.Reflection.BindingFlags.Instance);
 
-			ParameterExpression instance = 
-				Expression.Parameter(typeof(object), ""i"");
+		System.Linq.Expressions.ParameterExpression instance = 
+			System.Linq.Expressions.Expression.Parameter(typeof(object), ""i"");
 
-			MemberExpression memberExp =
-				Expression.Property(
-					Expression.Convert(instance, member.DeclaringType),
-					member);
+		System.Linq.Expressions.MemberExpression memberExp =
+			System.Linq.Expressions.Expression.Property(
+				System.Linq.Expressions.Expression.Convert(instance, member.DeclaringType),
+				member);
 
-			Expression<Func<object, object>> getter =
-				Expression.Lambda<Func<object, object>>(
-					Expression.Convert(memberExp, typeof(object)),
-					instance);
+		System.Linq.Expressions.Expression<Func<object, object>> getter =
+			System.Linq.Expressions.Expression.Lambda<Func<object, object>>(
+				System.Linq.Expressions.Expression.Convert(memberExp, typeof(object)),
+				instance);
 
-			Func<object, object> func = getter.Compile();
+		Func<object, object> func = getter.Compile();
 
-			return func;
-		}
-	}";
+		return func;
+	}
+}
+";
 		}
 	}
 }

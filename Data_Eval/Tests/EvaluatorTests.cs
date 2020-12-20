@@ -197,27 +197,6 @@ namespace Tests
 		}
 
 		[Test]
-		//[Ignore(reason:"Haven't fully implemented anonymous types yet.")]
-		public void Evaluator_AnonymousType()
-		{
-			var test = new
-			{
-				prop = "something"
-			};
-
-			var evaluator = new Evaluator(
-				"return a.prop");
-
-			// TODO: handle array of anonymous type
-
-			// TODO: recursively handle inner anonymous type
-
-			evaluator["a"] = test;
-
-			Assert.AreEqual("something", evaluator.Eval<string>());
-		}
-
-		[Test]
 		public void Evaluator_LinqReference()
 		{
 			var list = new string[]

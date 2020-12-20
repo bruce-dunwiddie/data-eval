@@ -20,14 +20,21 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
 ### Simple Addition
 
+Code:
 ```csharp
 Console.WriteLine(Evaluator.Eval("return 1+1"));
+```
+
+Result:
+```
+2
 ```
 
 [.Net Fiddle](https://dotnetfiddle.net/DTLu6Z)
 
 ### Variable Addition
 
+Code:
 ```csharp
 var evaluator = new Evaluator("return x+y");
 evaluator["x"] = 1;
@@ -35,10 +42,16 @@ evaluator["y"] = 2;
 Console.WriteLine("Result: " + evaluator.Eval());
 ```
 
+Result:
+```
+Result: 3
+```
+
 [.Net Fiddle](https://dotnetfiddle.net/19moI3)
 
 ### Variable Updates With No Return
 
+Code:
 ```csharp
 var evaluator = new Evaluator("x++");
 evaluator["x"] = 1;
@@ -46,10 +59,16 @@ evaluator.Exec();
 Console.WriteLine("Result: " + evaluator["x"]);
 ```
 
+Result:
+```
+Result: 2
+```
+
 [.Net Fiddle](https://dotnetfiddle.net/K30Ht3)
 
 ### Expressions With External Code
 
+Code:
 ```csharp
 // you can reference external code from inside an expression
 var eval = new Evaluator("message = ExampleClass.HelloWorld");
@@ -70,8 +89,14 @@ eval.Exec();
 Console.WriteLine(eval["message"]);
 ```
 
+Result:
+```
+Hello World
+```
+
 ### Add Callable Method
 
+Code:
 ```csharp
 Evaluator eval = new Evaluator("return IsFutureDate(date)");
 
@@ -90,12 +115,18 @@ eval["date"] = "1/1/1900";
 Console.WriteLine(eval.Eval<bool>());
 ```
 
+Result:
+```
+False
+```
+
 [.Net Fiddle](https://dotnetfiddle.net/zHq8VW)
 
 ### Speed
 
 For maximal speed, instances of the Evaluator class should be created with static strings referencing variables and be reused by just changing the value of the referenced variables, instead of dynamically changing the expression or creating new Evaluator instances, e.g.
 
+Code:
 ```csharp
 List<Customer> customers = new List<Customer>()
 {

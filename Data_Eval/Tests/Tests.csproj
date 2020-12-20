@@ -33,6 +33,9 @@
     <None Update="Resources\SimpleAnonymousTestWrapper.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\SimpleEvaluator.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -47,6 +47,7 @@ namespace Data.Eval.Compilation
 					*/
 					Path.Combine(assemblyPath, "mscorlib.dll"),
 					Path.Combine(assemblyPath, "System.dll"),
+					Path.Combine(assemblyPath, "System.Collections.dll"),
 					Path.Combine(assemblyPath, "System.Core.dll"),
 					Path.Combine(assemblyPath, "System.Runtime.dll"),
 					Path.Combine(assemblyPath, "System.Linq.Expressions.dll"),
