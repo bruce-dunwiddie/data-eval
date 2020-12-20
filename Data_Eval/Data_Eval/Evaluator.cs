@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -79,6 +80,13 @@ namespace Data.Eval
 				return variables.Keys.ToList();
 			}
 		}
+
+		/// <summary>
+		///		If set, the definition of the internal evaluation class will be saved
+		///		out to this file upon the first call to Exec or Eval. This file can be
+		///		used to troubleshoot syntax errors.
+		/// </summary>
+		public string DebugFileOutputName { get; set; }
 
 		/// <summary>
 		///		Sets the value of a variable referenced within the expression prior
@@ -258,6 +266,13 @@ namespace Data.Eval
 				usings,
 				methods);
 
+			if (DebugFileOutputName != null)
+			{
+				File.WriteAllText(
+					DebugFileOutputName,
+					classText);
+			}
+
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous
 			// calls creating multiple types with the same class text
@@ -333,6 +348,13 @@ namespace Data.Eval
 				}).ToList(),
 				usings,
 				methods);
+
+			if (DebugFileOutputName != null)
+			{
+				File.WriteAllText(
+					DebugFileOutputName,
+					classText);
+			}
 
 			// instead of taking the everytime hit of a synchronized lock
 			// choosing to take the infrequent possible hit of simultaneous

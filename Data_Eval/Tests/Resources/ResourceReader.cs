@@ -39,6 +39,14 @@ namespace Tests.Resources
 			}
 		}
 
+		public static string SimpleEvaluator
+		{
+			get
+			{
+				return ReadResourceFile("SimpleEvaluator.txt");
+			}
+		}
+
 		private static string ReadResourceFile(string fileName)
 		{
 			using (StreamReader reader = new StreamReader("./Resources/" + fileName))

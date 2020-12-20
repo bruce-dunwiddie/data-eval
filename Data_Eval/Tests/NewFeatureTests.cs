@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using NUnit.Framework;
 
 using Data.Eval;
+
+using Tests.Resources;
 
 namespace Tests
 {
@@ -51,6 +54,22 @@ namespace Tests
 				delegate { evaluator["a1"] = 1; });
 			Assert.DoesNotThrow(
 				delegate { evaluator["_a"] = 1; });
+		}
+
+		[Test]
+		public void Evaluator_SaveDebugFile()
+		{
+			var evaluator = new Evaluator("return 1");
+
+			evaluator.DebugFileOutputName = "./Evaluator.cs";
+
+			Assert.AreEqual(1, evaluator.Eval());
+
+			string debugFileContents = File.ReadAllText("./Evaluator.cs");
+
+			Assert.AreEqual(
+				ResourceReader.SimpleEvaluator,
+				debugFileContents);
 		}
 	}
 }
