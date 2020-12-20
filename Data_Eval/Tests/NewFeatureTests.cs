@@ -68,8 +68,8 @@ namespace Tests
 			string debugFileContents = File.ReadAllText("./Evaluator.cs");
 
 			Assert.AreEqual(
-				ResourceReader.SimpleEvaluator,
-				debugFileContents);
+				ResourceReader.SimpleEvaluator.Replace("\r\n", "\n"),
+				debugFileContents.Replace("\r\n", "\n"));
 		}
 	}
 }
