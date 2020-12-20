@@ -55,8 +55,6 @@ $@"public sealed class {className}
 {{
 	private static System.Collections.Generic.Dictionary<string, Func<object, object>> properties = null;
 	
-	private object innerObject = null;
-	
 	public {className}(object innerObject)
 	{{
 		if (properties == null)
@@ -66,14 +64,16 @@ $@"public sealed class {className}
 					innerObject.GetType());
 		}}
 
-		this.innerObject = innerObject;
+		this.InnerObject = innerObject;
 	}}
+
+	public object InnerObject {{ get; set; }}
 	
 	{propertiesText}
 	
 	private object GetValue(string property)
 	{{
-		return properties[property](innerObject);
+		return properties[property](InnerObject);
 	}}
 }}
 ";

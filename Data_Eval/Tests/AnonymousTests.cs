@@ -12,7 +12,7 @@ namespace Tests
 	public class AnonymousTests
 	{
 		[Test]
-		[Ignore(reason: "Haven't fully implemented anonymous types yet.")]
+		//[Ignore(reason: "Haven't fully implemented anonymous types yet.")]
 		public void Evaluator_SimpleAnonymousType()
 		{
 			var test = new

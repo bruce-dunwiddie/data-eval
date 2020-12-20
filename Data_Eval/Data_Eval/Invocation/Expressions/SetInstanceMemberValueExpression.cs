@@ -20,7 +20,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression argument = Expression.Parameter(typeof(object), "a");
 
 			MemberExpression memberExp = Expression.Field(
-				Expression.Convert(instance, member.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				member);
 
 			BinaryExpression assignExp = Expression.Assign(

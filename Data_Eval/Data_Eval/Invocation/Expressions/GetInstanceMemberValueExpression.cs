@@ -19,7 +19,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression instance = Expression.Parameter(typeof(object), "i");
 
 			MemberExpression memberExp = Expression.Field(
-				Expression.Convert(instance, member.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				member);
 
 			Expression<Func<object, object>> getter = Expression.Lambda<Func<object, object>>(

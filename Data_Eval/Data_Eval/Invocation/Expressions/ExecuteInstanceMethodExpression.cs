@@ -19,7 +19,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
 			Expression methodExp = Expression.Call(
-				Expression.Convert(instance, method.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				method,
 				new Expression[] { });
 
@@ -50,7 +50,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
 			Expression methodExp = Expression.Call(
-				Expression.Convert(instance, method.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				method,
 				new Expression[] { });
 

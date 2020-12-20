@@ -11,8 +11,6 @@ namespace Tests.Reflection
 	{
 		private static Dictionary<string, Func<object, object>> properties = null;
 
-		private object innerObject = null;
-
 		public AnonymousTypeAccessor1(object innerObject)
 		{
 			if (properties == null)
@@ -20,8 +18,10 @@ namespace Tests.Reflection
 				properties = new ReadonlyPropertyAccessor().GetProperties(innerObject.GetType());
 			}
 
-			this.innerObject = innerObject;
+			this.InnerObject = innerObject;
 		}
+
+		public object InnerObject { get; set; }
 
 		public string prop
 		{
@@ -33,7 +33,7 @@ namespace Tests.Reflection
 
 		private object GetValue(string property)
 		{
-			return properties[property](innerObject);
+			return properties[property](InnerObject);
 		}
 	}
 }

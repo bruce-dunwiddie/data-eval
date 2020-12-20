@@ -6,6 +6,7 @@ using System.Reflection;
 
 using Data.Eval.CodeWriting;
 using Data.Eval.Compilation;
+using Data.Eval.Invocation;
 using Data.Eval.Invocation.Expressions;
 
 namespace Data.Eval
@@ -324,19 +325,36 @@ namespace Data.Eval
 
 				foreach (string key in variables.Keys)
 				{
-					Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
-						newType,
-						key);
+					Variable variable = variables[key];
 
-					Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
-						newType,
-						key);
+					Func<object, object> getter = null;
+					Action<object, object> setter = null;
+
+					if (variable.Type.IsPublic)
+					{
+						getter = new GetInstanceMemberValueExpression().GetFunc(
+							newType,
+							key);
+
+						setter = new SetInstanceMemberValueExpression().GetAction(
+							newType,
+							key);
+					}
+					else
+					{
+						getter = new WrapperTranslator().GetGetAndUnwrap(
+							newType,
+							key);
+
+						setter = new WrapperTranslator().GetWrapAndSet(
+							newType,
+							key);
+					}
 
 					execution.Variables[key] = new ExecutionVariable
 					{
 						Getter = getter,
-						Setter = setter,
-						Type = variables[key].Type
+						Setter = setter
 					};
 				}
 
@@ -555,8 +573,6 @@ namespace Data.Eval
 			public Action<object, object> Setter = null;
 
 			public Func<object, object> Getter = null;
-
-			public Type Type = null;
 		}
 	}
 }
