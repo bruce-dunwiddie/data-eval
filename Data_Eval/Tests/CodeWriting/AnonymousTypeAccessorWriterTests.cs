@@ -29,10 +29,6 @@ namespace Tests.CodeWriting
 				test.GetType(), 
 				"SimpleAnonymousTestWrapper");
 
-			File.WriteAllText(
-				"./SimpleAnonymousTestWrapper.cs",
-				classText);
-
 			Assert.AreEqual(
 				ResourceReader.SimpleAnonymousTestWrapper.Replace("\r\n", "\n"),
 				classText.Replace("\r\n", "\n"));
