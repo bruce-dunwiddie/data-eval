@@ -18,6 +18,9 @@ Available on Nuget, [Data.Eval](https://www.nuget.org/packages/Data.Eval/).
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=data-eval&metric=coverage)](https://sonarcloud.io/component_measures?id=data-eval&metric=coverage)
 
+### Class Documentation
+- [bruce-dunwiddie.github.io/data-eval/](<http://bruce-dunwiddie.github.io/data-eval/html/T_Data_Eval_Evaluator.htm>)
+
 ### Simple Addition
 
 Code:
