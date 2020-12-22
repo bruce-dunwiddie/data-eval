@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
@@ -20,7 +18,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression argument = Expression.Parameter(typeof(object), "a");
 
 			MemberExpression memberExp = Expression.Field(
-				Expression.Convert(instance, member.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				member);
 
 			BinaryExpression assignExp = Expression.Assign(

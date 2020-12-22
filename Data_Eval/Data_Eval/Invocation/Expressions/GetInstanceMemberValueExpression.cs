@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
@@ -19,7 +17,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression instance = Expression.Parameter(typeof(object), "i");
 
 			MemberExpression memberExp = Expression.Field(
-				Expression.Convert(instance, member.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				member);
 
 			Expression<Func<object, object>> getter = Expression.Lambda<Func<object, object>>(

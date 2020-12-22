@@ -6,6 +6,7 @@ using System.Reflection;
 
 using Data.Eval.CodeWriting;
 using Data.Eval.Compilation;
+using Data.Eval.Invocation;
 using Data.Eval.Invocation.Expressions;
 
 namespace Data.Eval
@@ -134,7 +135,7 @@ namespace Data.Eval
 			}
 			else
 			{
-				if (IsValidVariableName(name))
+				if (IdentifierValidator.IsValidIdentifier(name))
 				{
 					variables[name] = new Variable
 					{
@@ -150,23 +151,6 @@ namespace Data.Eval
 						"Valid variable names must start with a letter or underscore, and not contain any whitespace.");
 				}
 			}
-		}
-
-		private static bool IsValidVariableName(string text)
-		{
-			// https://stackoverflow.com/a/45201527
-
-			// doesn't allow every single valid C# variable, but it's good enough
-			// for this purpose
-
-			if (string.IsNullOrEmpty(text))
-				return false;
-			if (!char.IsLetter(text[0]) && text[0] != '_')
-				return false;
-			for (int ix = 1; ix < text.Length; ++ix)
-				if (!char.IsLetterOrDigit(text[ix]) && text[ix] != '_')
-					return false;
-			return true;
 		}
 
 		/// <summary>
@@ -324,19 +308,36 @@ namespace Data.Eval
 
 				foreach (string key in variables.Keys)
 				{
-					Func<object, object> getter = new GetInstanceMemberValueExpression().GetFunc(
-						newType,
-						key);
+					Variable variable = variables[key];
 
-					Action<object, object> setter = new SetInstanceMemberValueExpression().GetAction(
-						newType,
-						key);
+					Func<object, object> getter = null;
+					Action<object, object> setter = null;
+
+					if (variable.Type.IsPublic)
+					{
+						getter = new GetInstanceMemberValueExpression().GetFunc(
+							newType,
+							key);
+
+						setter = new SetInstanceMemberValueExpression().GetAction(
+							newType,
+							key);
+					}
+					else
+					{
+						getter = new WrapperTranslator().GetGetAndUnwrap(
+							newType,
+							key);
+
+						setter = new WrapperTranslator().GetWrapAndSet(
+							newType,
+							key);
+					}
 
 					execution.Variables[key] = new ExecutionVariable
 					{
 						Getter = getter,
-						Setter = setter,
-						Type = variables[key].Type
+						Setter = setter
 					};
 				}
 
@@ -555,8 +556,6 @@ namespace Data.Eval
 			public Action<object, object> Setter = null;
 
 			public Func<object, object> Getter = null;
-
-			public Type Type = null;
 		}
 	}
 }

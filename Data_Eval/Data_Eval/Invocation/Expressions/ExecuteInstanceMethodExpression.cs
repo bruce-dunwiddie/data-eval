@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace Data.Eval.Invocation.Expressions
 {
@@ -19,7 +17,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
 			Expression methodExp = Expression.Call(
-				Expression.Convert(instance, method.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				method,
 				new Expression[] { });
 
@@ -50,7 +48,7 @@ namespace Data.Eval.Invocation.Expressions
 			ParameterExpression allParameters = Expression.Parameter(typeof(object[]), "params");
 
 			Expression methodExp = Expression.Call(
-				Expression.Convert(instance, method.DeclaringType),
+				Expression.Convert(instance, instanceType),
 				method,
 				new Expression[] { });
 
