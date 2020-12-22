@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpTOC>
+
+  <HelpTOCNode Id="1d8928c1-c63a-4c6e-9a00-1a996e216c28" Title="Data.Eval Package" Url="html/R_Project_SandcastleDocs.htm">
+    <HelpTOCNode Id="749ee7f5-e0d2-485c-bcc0-a37b016420c9" Title="Data.Eval" Url="html/N_Data_Eval.htm">
+      <HelpTOCNode Id="2a8508ed-e7c5-4c83-9e7e-7d23d97d649a" Title="Evaluator Class" Url="html/T_Data_Eval_Evaluator.htm">
+        <HelpTOCNode Title="Evaluator Constructor " Url="html/M_Data_Eval_Evaluator__ctor.htm" />
+        <HelpTOCNode Id="d3b48f59-5378-48fb-a663-df647bb204dd" Title="Evaluator Properties" Url="html/Properties_T_Data_Eval_Evaluator.htm">
+          <HelpTOCNode Title="DebugFileOutputName Property " Url="html/P_Data_Eval_Evaluator_DebugFileOutputName.htm" />
+          <HelpTOCNode Title="Item Property " Url="html/P_Data_Eval_Evaluator_Item.htm" />
+          <HelpTOCNode Title="VariableNames Property " Url="html/P_Data_Eval_Evaluator_VariableNames.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="94954a44-f123-456c-83a8-0b3d35e8965a" Title="Evaluator Methods" Url="html/Methods_T_Data_Eval_Evaluator.htm">
+          <HelpTOCNode Title="AddMethod Method " Url="html/M_Data_Eval_Evaluator_AddMethod.htm" />
+          <HelpTOCNode Id="f3768082-1405-4758-a122-6c850c203875" Title="AddReference Method " Url="html/Overload_Data_Eval_Evaluator_AddReference.htm">
+            <HelpTOCNode Title="AddReference Method (Assembly)" Url="html/M_Data_Eval_Evaluator_AddReference.htm" />
+            <HelpTOCNode Title="AddReference Method (String)" Url="html/M_Data_Eval_Evaluator_AddReference_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Title="AddUsing Method " Url="html/M_Data_Eval_Evaluator_AddUsing.htm" />
+          <HelpTOCNode Id="d2170d3d-b683-4e9f-94af-6c048b281ede" Title="Eval Method " Url="html/Overload_Data_Eval_Evaluator_Eval.htm">
+            <HelpTOCNode Title="Eval Method " Url="html/M_Data_Eval_Evaluator_Eval.htm" />
+            <HelpTOCNode Title="Eval(T) Method " Url="html/M_Data_Eval_Evaluator_Eval__1.htm" />
+            <HelpTOCNode Title="Eval Method (String)" Url="html/M_Data_Eval_Evaluator_Eval_1.htm" />
+            <HelpTOCNode Title="Eval(T) Method (String)" Url="html/M_Data_Eval_Evaluator_Eval__1_1.htm" />
+          </HelpTOCNode>
+          <HelpTOCNode Title="Exec Method " Url="html/M_Data_Eval_Evaluator_Exec.htm" />
+          <HelpTOCNode Title="GetVariable Method " Url="html/M_Data_Eval_Evaluator_GetVariable.htm" />
+          <HelpTOCNode Id="ccfa8905-983b-47bd-87ef-8a8369a92ffa" Title="SetVariable Method " Url="html/Overload_Data_Eval_Evaluator_SetVariable.htm">
+            <HelpTOCNode Title="SetVariable Method (String, Object)" Url="html/M_Data_Eval_Evaluator_SetVariable.htm" />
+            <HelpTOCNode Title="SetVariable Method (String, Object, Type)" Url="html/M_Data_Eval_Evaluator_SetVariable_1.htm" />
+          </HelpTOCNode>
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="d82c80e3-d753-46fd-9123-20714ef0115e" Title="Data.Eval.Compilation" Url="html/N_Data_Eval_Compilation.htm">
+      <HelpTOCNode Id="ea350c90-565b-4a90-bc8b-4841212f4b49" Title="CompilationException Class" Url="html/T_Data_Eval_Compilation_CompilationException.htm">
+        <HelpTOCNode Id="494dfe3c-fc67-45b4-aa5c-113eda9ac3cb" Title="CompilationException Constructor " Url="html/Overload_Data_Eval_Compilation_CompilationException__ctor.htm">
+          <HelpTOCNode Title="CompilationException Constructor " Url="html/M_Data_Eval_Compilation_CompilationException__ctor.htm" />
+          <HelpTOCNode Title="CompilationException Constructor (String)" Url="html/M_Data_Eval_Compilation_CompilationException__ctor_1.htm" />
+          <HelpTOCNode Title="CompilationException Constructor (String, Exception)" Url="html/M_Data_Eval_Compilation_CompilationException__ctor_2.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="c0e5b533-e014-4e2a-835d-83fcaffadb51" Title="CompilationException Properties" Url="html/Properties_T_Data_Eval_Compilation_CompilationException.htm">
+          <HelpTOCNode Title="GeneratedClassCode Property " Url="html/P_Data_Eval_Compilation_CompilationException_GeneratedClassCode.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="7ed9f824-c53e-4ef7-8562-52d44e230344" Title="CompilationException Methods" Url="html/Methods_T_Data_Eval_Compilation_CompilationException.htm">
+          <HelpTOCNode Title="GetObjectData Method " Url="html/M_Data_Eval_Compilation_CompilationException_GetObjectData.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+</HelpTOC>

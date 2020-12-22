@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="AddMethod method" Url="html/M_Data_Eval_Evaluator_AddMethod.htm" />
+  <HelpKINode Title="AddReference method" Url="html/Overload_Data_Eval_Evaluator_AddReference.htm" />
+  <HelpKINode Title="AddUsing method" Url="html/M_Data_Eval_Evaluator_AddUsing.htm" />
+  <HelpKINode Title="CompilationException class">
+    <HelpKINode Title="CompilationException Class" Url="html/T_Data_Eval_Compilation_CompilationException.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Data_Eval_Compilation_CompilationException__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Data_Eval_Compilation_CompilationException.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Data_Eval_Compilation_CompilationException.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CompilationException.CompilationException constructor" Url="html/Overload_Data_Eval_Compilation_CompilationException__ctor.htm" />
+  <HelpKINode Title="CompilationException.GeneratedClassCode property" Url="html/P_Data_Eval_Compilation_CompilationException_GeneratedClassCode.htm" />
+  <HelpKINode Title="CompilationException.GetObjectData method" Url="html/M_Data_Eval_Compilation_CompilationException_GetObjectData.htm" />
+  <HelpKINode Title="Data.Eval namespace" Url="html/N_Data_Eval.htm" />
+  <HelpKINode Title="Data.Eval.Compilation namespace" Url="html/N_Data_Eval_Compilation.htm" />
+  <HelpKINode Title="Data.Eval.Compilation.CompilationException class" Url="html/T_Data_Eval_Compilation_CompilationException.htm" />
+  <HelpKINode Title="Data.Eval.Evaluator class" Url="html/T_Data_Eval_Evaluator.htm" />
+  <HelpKINode Title="DebugFileOutputName property" Url="html/P_Data_Eval_Evaluator_DebugFileOutputName.htm" />
+  <HelpKINode Title="Eval method" Url="html/Overload_Data_Eval_Evaluator_Eval.htm" />
+  <HelpKINode Title="Evaluator class">
+    <HelpKINode Title="Evaluator Class" Url="html/T_Data_Eval_Evaluator.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Data_Eval_Evaluator__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Data_Eval_Evaluator.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Data_Eval_Evaluator.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Evaluator.AddMethod method" Url="html/M_Data_Eval_Evaluator_AddMethod.htm" />
+  <HelpKINode Title="Evaluator.AddReference method" Url="html/Overload_Data_Eval_Evaluator_AddReference.htm" />
+  <HelpKINode Title="Evaluator.AddUsing method" Url="html/M_Data_Eval_Evaluator_AddUsing.htm" />
+  <HelpKINode Title="Evaluator.DebugFileOutputName property" Url="html/P_Data_Eval_Evaluator_DebugFileOutputName.htm" />
+  <HelpKINode Title="Evaluator.Eval method" Url="html/Overload_Data_Eval_Evaluator_Eval.htm" />
+  <HelpKINode Title="Evaluator.Evaluator constructor" Url="html/M_Data_Eval_Evaluator__ctor.htm" />
+  <HelpKINode Title="Evaluator.Exec method" Url="html/M_Data_Eval_Evaluator_Exec.htm" />
+  <HelpKINode Title="Evaluator.GetVariable method" Url="html/M_Data_Eval_Evaluator_GetVariable.htm" />
+  <HelpKINode Title="Evaluator.Item property" Url="html/P_Data_Eval_Evaluator_Item.htm" />
+  <HelpKINode Title="Evaluator.SetVariable method" Url="html/Overload_Data_Eval_Evaluator_SetVariable.htm" />
+  <HelpKINode Title="Evaluator.VariableNames property" Url="html/P_Data_Eval_Evaluator_VariableNames.htm" />
+  <HelpKINode Title="Exec method" Url="html/M_Data_Eval_Evaluator_Exec.htm" />
+  <HelpKINode Title="GeneratedClassCode property" Url="html/P_Data_Eval_Compilation_CompilationException_GeneratedClassCode.htm" />
+  <HelpKINode Title="GetObjectData method" Url="html/M_Data_Eval_Compilation_CompilationException_GetObjectData.htm" />
+  <HelpKINode Title="GetVariable method" Url="html/M_Data_Eval_Evaluator_GetVariable.htm" />
+  <HelpKINode Title="Item property" Url="html/P_Data_Eval_Evaluator_Item.htm" />
+  <HelpKINode Title="SetVariable method" Url="html/Overload_Data_Eval_Evaluator_SetVariable.htm" />
+  <HelpKINode Title="VariableNames property" Url="html/P_Data_Eval_Evaluator_VariableNames.htm" />
+</HelpKI>
