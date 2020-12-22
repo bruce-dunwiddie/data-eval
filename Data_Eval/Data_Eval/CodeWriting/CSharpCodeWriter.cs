@@ -13,7 +13,7 @@ namespace Data.Eval.CodeWriting
 			List<string> methods,
 			bool withReturn)
 		{
-			string signature = null;
+			string signature;
 
 			if (withReturn)
 			{
@@ -45,8 +45,6 @@ namespace Data.Eval.CodeWriting
 
 			// adding other standard namespaces for convenience
 			classText.Append("using System.Linq;\r\n\r\n");
-
-			// TODO: change sealed class to static class?
 
 			if (usings.Count > 0)
 			{
