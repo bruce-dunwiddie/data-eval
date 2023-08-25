@@ -281,6 +281,11 @@ namespace Data.Eval
 			if (alreadyCompiled)
 			{
 				execution = compiledTypes[classText];
+
+				if (execution.Exception != null)
+				{
+					throw execution.Exception;
+				}
 			}
 			else
 			{
@@ -297,11 +302,24 @@ namespace Data.Eval
 
 				Compiler compiler = new Compiler();
 
-				Type newType = compiler.Compile(
-					classText,
-					references,
-					"EvalAssembly",
-					"CustomEvaluator");
+				Type newType;
+
+				try
+				{
+					newType = compiler.Compile(
+						classText,
+						references,
+						"EvalAssembly",
+						"CustomEvaluator");
+				}
+				catch (CompilationException ex)
+				{
+					execution.Exception = ex;
+
+					compiledTypes[classText] = execution;
+
+					throw;
+				}
 
 				execution.Constructor = new DefaultClassConstructorExpression().GetFunc(
 					newType);
@@ -549,6 +567,8 @@ namespace Data.Eval
 			public Func<object> Constructor = null;
 
 			public Dictionary<string, ExecutionVariable> Variables = new Dictionary<string, ExecutionVariable>();
+
+			public CompilationException Exception = null;
 		}
 
 		private sealed class ExecutionVariable

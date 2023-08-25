@@ -5,6 +5,8 @@ using System.Dynamic;
 using NUnit.Framework;
 
 using Data.Eval;
+using Data.Eval.Compilation;
+using System.Diagnostics;
 
 namespace Tests
 {
@@ -213,6 +215,26 @@ namespace Tests
 				list);
 
 			Assert.AreEqual(1, evaluator.Eval<int>());
+		}
+
+		[Ignore("Don't want to have an intensive long running test unless needed.")]
+		[Test]
+		public void Evaluator_LoopedExceptionTime()
+		{
+			Stopwatch stopwatch = Stopwatch.StartNew();
+
+			for (int loopCount = 0; loopCount < 200; loopCount++)
+			{
+				CompilationException ex = Assert.Throws<CompilationException>(
+					delegate
+					{
+						var blah = Evaluator.Eval("return blah");
+					});
+			}
+
+			stopwatch.Stop();
+
+			Assert.Less(stopwatch.ElapsedMilliseconds, 3000);
 		}
 	}
 }

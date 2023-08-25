@@ -54,12 +54,12 @@ namespace Tests
 		[Test]
 		public void Evaluator_ExecAddUsing()
 		{
-			var eval = new Evaluator("message = ExampleClass.HelloWorld");
+			var eval = new Evaluator("testMessage = ExampleClass.HelloWorld");
 			eval.AddReference(typeof(TestExternalReference.ExampleClass).Assembly.Location);
 			eval.AddUsing("TestExternalReference");
-			eval["message"] = "";
+			eval["testMessage"] = "";
 			eval.Exec();
-			Assert.AreEqual("Hello World", eval["message"]);
+			Assert.AreEqual("Hello World", eval["testMessage"]);
 		}
 
 		[Test]
