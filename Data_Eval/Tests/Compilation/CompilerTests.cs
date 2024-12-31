@@ -78,7 +78,7 @@ namespace Tests.Compilation
 						"CustomEvaluator");
 				});
 
-			Assert.AreEqual("Class failed to compile.\n\tLine 6: ; expected", ex.Message);
+			Assert.AreEqual("Class failed to compile.\n\tError: ; expected\n\tOn Line 6: return intValue + 1", ex.Message);
 			Assert.AreEqual(codeToCompile, ex.GeneratedClassCode);
 		}
 	}

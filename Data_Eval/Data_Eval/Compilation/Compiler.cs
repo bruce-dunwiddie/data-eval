@@ -79,8 +79,12 @@ namespace Data.Eval.Compilation
 					foreach (var error in emitResult.Diagnostics
 						.Where(e => e.Severity == DiagnosticSeverity.Error || e.IsWarningAsError)
 						.OrderBy(e => e.Location.GetLineSpan().StartLinePosition.Line))
-					{							
-						exceptionMessage += "\n\tLine " + error.Location.GetLineSpan().StartLinePosition.Line.ToString() + ": " + error.GetMessage();
+					{
+						exceptionMessage += "\n\tError: " + error.GetMessage();
+
+						string code = classText.Replace("\r\n", "\n").Split('\r', '\n')[error.Location.GetLineSpan().StartLinePosition.Line].Trim().TrimEnd(';');
+
+						exceptionMessage += "\n\tOn Line " + error.Location.GetLineSpan().StartLinePosition.Line.ToString() + ": " + code;
 					}
 
 					throw new CompilationException(exceptionMessage)
